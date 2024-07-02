@@ -13,10 +13,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        let trackerNavBarViewController = TrackerNavBarController()
+        trackerNavBarViewController.tabBarItem = UITabBarItem(
+            title: "Трекеры",
+            image: UIImage(systemName: "circle.circle.fill"),
+            selectedImage: nil
+        )
+        
+        let statsViewController = StatsViewController()
+        statsViewController.tabBarItem = UITabBarItem(
+            title: "Статистика",
+            image: UIImage(systemName: "hare.fill"),
+            selectedImage: nil
+        )
+        
+        // Создаем TabBarController и добавляем контроллеры
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [trackerNavBarViewController, statsViewController]
+                
+        // Устанавливаем TabBarController как корневой ViewController
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
