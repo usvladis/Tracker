@@ -15,7 +15,6 @@ final class CreateTrackerViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUpView()
     }
     
@@ -74,6 +73,18 @@ final class CreateTrackerViewController: UIViewController{
             
         ])
         
+        habitButton.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
+        irregularEventButton.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
+        
+    }
+    
+    @objc  func didTapHabitButton() {
+        let newVC = NewHabitViewController()
+        newVC.modalPresentationStyle = .popover
+        present(newVC, animated: true, completion: nil)
+    }
+    
+    @objc  func didTapIrregularEventButton() {
         
     }
 }
