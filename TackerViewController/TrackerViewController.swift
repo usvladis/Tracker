@@ -253,11 +253,9 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
             guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TrackersHeaderReusableView", for: indexPath) as? TrackersHeaderReusableView else {
                 return UICollectionReusableView()
             }
-            view.titleLabel.text = categories[indexPath.section].title
+            view.titleLabel.text = filteredTrackers[indexPath.section].title
             return view
         default: return UICollectionReusableView()
         }
     }
-    
-    
 }

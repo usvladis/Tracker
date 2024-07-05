@@ -26,7 +26,7 @@
                                 <color key="textColor" red="0.92156863209999995" green="0.92156863209999995" blue="0.83529412749999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="plu" translatesAutoresizingMaskIntoConstraints="NO" id="m2N-J8-6cc">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="che" translatesAutoresizingMaskIntoConstraints="NO" id="m2N-J8-6cc">
                                 <rect key="frame" x="76" y="124" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -45,6 +45,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="plu" width="128" height="128"/>
+        <image name="che" width="128" height="128"/>
     </resources>
 </document>

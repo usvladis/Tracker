@@ -85,6 +85,8 @@ final class CreateTrackerViewController: UIViewController{
     }
     
     @objc  func didTapIrregularEventButton() {
-        
+        let newVC = CreateNewIrregularEventViewController()
+        newVC.modalPresentationStyle = .popover
+        present(newVC, animated: true, completion: nil)
     }
 }

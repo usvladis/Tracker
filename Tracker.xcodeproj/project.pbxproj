@@ -22,6 +22,7 @@
 		218881472C2DCEEF0032D98E /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881462C2DCEEF0032D98E /* TrackerUITestsLaunchTests.swift */; };
 		218881592C2DEC460032D98E /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881582C2DEC450032D98E /* TrackerViewController.swift */; };
 		2188815C2C2DEC580032D98E /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188815B2C2DEC580032D98E /* StatsViewController.swift */; };
+		219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */; };
 		21EDAB592C2DFF4D00C2CD21 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */; };
 		21EDAB5A2C2DFF4D00C2CD21 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */; };
 		21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */; };
@@ -68,6 +69,7 @@
 		218881462C2DCEEF0032D98E /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		218881582C2DEC450032D98E /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		2188815B2C2DEC580032D98E /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
+		219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNavBarController.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		218881142C2DCEEE0032D98E = {
 			isa = PBXGroup;
 			children = (
+				219AB6782C36B18100F0B613 /* CreateNewIrregularEvent */,
 				21EDABA02C30427C00C2CD21 /* Models */,
 				210E27212C34684B00189D83 /* CreateNewTracker */,
 				210E27242C348DBE00189D83 /* CreateNewHabit */,
@@ -193,6 +196,14 @@
 				2188815B2C2DEC580032D98E /* StatsViewController.swift */,
 			);
 			path = StatsViewController;
+			sourceTree = "<group>";
+		};
+		219AB6782C36B18100F0B613 /* CreateNewIrregularEvent */ = {
+			isa = PBXGroup;
+			children = (
+				219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */,
+			);
+			path = CreateNewIrregularEvent;
 			sourceTree = "<group>";
 		};
 		21EDAB582C2DFF4D00C2CD21 /* Fonts */ = {
@@ -348,6 +359,7 @@
 			files = (
 				210E27282C34A63700189D83 /* ScheduleViewController.swift in Sources */,
 				21EDABA42C3042A700C2CD21 /* TrackerCategory.swift in Sources */,
+				219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */,
 				2188812B2C2DCEEE0032D98E /* Tracker.xcdatamodeld in Sources */,
 				210E27202C345AAA00189D83 /* TrackersHeaderReusableView.swift in Sources */,
 				218881252C2DCEEE0032D98E /* ViewController.swift in Sources */,

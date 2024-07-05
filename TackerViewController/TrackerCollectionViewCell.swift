@@ -25,6 +25,12 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        backgroundColor = nil
+    }
+    
     private func setupView() {
         // Configure background card view
         backgroundCardView.layer.cornerRadius = 10
@@ -90,6 +96,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
         plusButton.tintColor = .white
         plusButton.layer.cornerRadius = 17 // half of the button's height and width
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(plusButton)
         
@@ -107,6 +114,10 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         daysLabel.text = "\(completedDays) дней"
         backgroundCardView.backgroundColor = tracker.color
         plusButton.backgroundColor = tracker.color
+    }
+    
+    @objc private func plusButtonTapped() {
+        print("Plus button tapped")
     }
 }
 
