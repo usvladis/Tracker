@@ -23,6 +23,8 @@
 		218881592C2DEC460032D98E /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881582C2DEC450032D98E /* TrackerViewController.swift */; };
 		2188815C2C2DEC580032D98E /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188815B2C2DEC580032D98E /* StatsViewController.swift */; };
 		219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */; };
+		219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */; };
+		219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */; };
 		21EDAB592C2DFF4D00C2CD21 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */; };
 		21EDAB5A2C2DFF4D00C2CD21 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */; };
 		21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */; };
@@ -70,6 +72,8 @@
 		218881582C2DEC450032D98E /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		2188815B2C2DEC580032D98E /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewIrregularEventViewController.swift; sourceTree = "<group>"; };
+		219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitVC.swift; sourceTree = "<group>"; };
+		219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNavBarController.swift; sourceTree = "<group>"; };
@@ -117,6 +121,7 @@
 			children = (
 				210E27252C348DFF00189D83 /* NewHabitViewController.swift */,
 				210E27272C34A63700189D83 /* ScheduleViewController.swift */,
+				219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */,
 			);
 			path = CreateNewHabit;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 		218881142C2DCEEE0032D98E = {
 			isa = PBXGroup;
 			children = (
+				219AB67D2C37ECA000F0B613 /* Emoji & Color Cell */,
 				219AB6782C36B18100F0B613 /* CreateNewIrregularEvent */,
 				21EDABA02C30427C00C2CD21 /* Models */,
 				210E27212C34684B00189D83 /* CreateNewTracker */,
@@ -204,6 +210,14 @@
 				219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */,
 			);
 			path = CreateNewIrregularEvent;
+			sourceTree = "<group>";
+		};
+		219AB67D2C37ECA000F0B613 /* Emoji & Color Cell */ = {
+			isa = PBXGroup;
+			children = (
+				219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */,
+			);
+			path = "Emoji & Color Cell";
 			sourceTree = "<group>";
 		};
 		21EDAB582C2DFF4D00C2CD21 /* Fonts */ = {
@@ -357,7 +371,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */,
 				210E27282C34A63700189D83 /* ScheduleViewController.swift in Sources */,
+				219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */,
 				21EDABA42C3042A700C2CD21 /* TrackerCategory.swift in Sources */,
 				219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */,
 				2188812B2C2DCEEE0032D98E /* Tracker.xcdatamodeld in Sources */,

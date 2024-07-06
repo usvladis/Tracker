@@ -16,6 +16,8 @@ final class TrackerViewController: UIViewController{
     private var datePicker = UIDatePicker()
     private var collectionView: UICollectionView!
     
+    private var selectedDate = Date()
+    
     var trackers = [Tracker]()
     var filteredTrackers: [TrackerCategory] = []
     
@@ -39,11 +41,11 @@ final class TrackerViewController: UIViewController{
     }
     
     private func loadMockData() {
-        let tracker1 = Tracker(id: UUID(), title: "Кошка заслонила камеру на созвоне", color: .orange, emoji: "😻", schedule: [DayOfWeek.wednesday])
-        let tracker2 = Tracker(id: UUID(), title: "Бабушка прислала открытку в ватсапе", color: .red, emoji: "🌸", schedule: [DayOfWeek.thursday])
-        let tracker3 = Tracker(id: UUID(), title: "Cвидание в апреле", color: .purple, emoji: "❤️", schedule: [DayOfWeek.wednesday])
+        let tracker1 = Tracker(id: UUID(), title: "Кошка заслонила камеру на созвоне", color: .orange, emoji: "😻", schedule: [DayOfWeek.friday])
+        let tracker2 = Tracker(id: UUID(), title: "Бабушка прислала открытку в ватсапе", color: .red, emoji: "🌸", schedule: [DayOfWeek.friday])
+        let tracker3 = Tracker(id: UUID(), title: "Cвидание в апреле", color: .purple, emoji: "❤️", schedule: [DayOfWeek.saturday])
         let tracker4 = Tracker(id: UUID(), title: "Поливать растения", color: .systemGreen
-                               , emoji: "❤️", schedule: [DayOfWeek.wednesday])
+                               , emoji: "❤️", schedule: [DayOfWeek.friday])
         let category1 = TrackerCategory(title: "Домашний уют", trackers: [tracker4])
         let category2 = TrackerCategory(title: "Радостные мелочи", trackers: [tracker1, tracker2, tracker3])
         categories.append(category1)
@@ -81,7 +83,7 @@ final class TrackerViewController: UIViewController{
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yy"
-        let selectedDate = dateFormatter.string(from: sender.date)
+        selectedDate = sender.date
         
         // Определяем день недели
         let calendar = Calendar.current
@@ -108,6 +110,25 @@ final class TrackerViewController: UIViewController{
         }
     }
     
+    private func toggleTrackerCompletion(for tracker: Tracker) {
+        let today = Date()
+        let selectedDate = datePicker.date
+        if Calendar.current.compare(today, to: Date(), toGranularity: .day) == .orderedDescending {
+            // Do not allow marking future dates
+            return
+        }
+        
+        if let index = completedTrackers.firstIndex(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
+            // Tracker is already completed for selected date, so remove it
+            completedTrackers.remove(at: index)
+        } else {
+            // Tracker is not completed for today, so add it
+            let record = TrackerRecord(trackerId: tracker.id, date: selectedDate)
+            completedTrackers.append(record)
+        }
+        print(completedTrackers)
+        collectionView.reloadData()
+    }
 //MARK: - SetUpUIView
     private func setUpView() {
         view.backgroundColor = .white
@@ -236,7 +257,21 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
             fatalError("Unable to dequeue TrackerCollectionViewCell")
         }
         let tracker = filteredTrackers[indexPath.section].trackers[indexPath.item]
-        cell.configure(with: tracker, completedDays: 5) // Placeholder value for completed days
+        
+        let completedDays = completedTrackers.filter { $0.trackerId == tracker.id }.count
+        let isCompleted = completedTrackers.contains { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
+        
+        cell.configure(with: tracker, completedDays: completedDays, isCompleted: isCompleted)
+        cell.buttonAction = { [weak self] in
+            self?.toggleTrackerCompletion(for: tracker)
+            
+            if let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell {
+                let completedDays = self?.completedTrackers.filter { $0.trackerId == tracker.id }.count ?? 0
+                let isCompleted = self?.completedTrackers.contains { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: self?.selectedDate ?? Date()) } ?? false
+                cell.configure(with: tracker, completedDays: completedDays, isCompleted: isCompleted)
+            }
+        }
+        
         return cell
     }
     
@@ -256,6 +291,21 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
             view.titleLabel.text = filteredTrackers[indexPath.section].title
             return view
         default: return UICollectionReusableView()
+        }
+    }
+}
+    
+extension TrackerViewController: UICollectionViewDelegate{
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let tracker = filteredTrackers[indexPath.section].trackers[indexPath.item]
+        toggleTrackerCompletion(for: tracker)
+
+        if let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell {
+            let completedDays = completedTrackers.filter { $0.trackerId == tracker.id }.count
+            let isCompleted = completedTrackers.contains { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
+            cell.configure(with: tracker, completedDays: completedDays, isCompleted: isCompleted)
         }
     }
 }

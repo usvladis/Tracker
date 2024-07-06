@@ -16,6 +16,9 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     private let backgroundCardView = UIView()
     private let backgroundEmojiView = UIView()
     
+    var trackerID: UUID?
+    var buttonAction: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -108,16 +111,25 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with tracker: Tracker, completedDays: Int) {
+    func configure(with tracker: Tracker, completedDays: Int, isCompleted: Bool) {
         emojiLabel.text = tracker.emoji
         titleLabel.text = tracker.title
         daysLabel.text = "\(completedDays) дней"
         backgroundCardView.backgroundColor = tracker.color
-        plusButton.backgroundColor = tracker.color
+        //plusButton.backgroundColor = tracker.color
+        trackerID = tracker.id
+        
+        if isCompleted {
+            plusButton.setImage(UIImage(named: "doneLabel"), for: .normal)
+            plusButton.backgroundColor = tracker.color.withAlphaComponent(0.5)
+        } else {
+            plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            plusButton.backgroundColor = tracker.color
+        }
     }
     
     @objc private func plusButtonTapped() {
-        print("Plus button tapped")
+        buttonAction?()
     }
 }
 
