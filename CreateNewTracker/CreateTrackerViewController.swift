@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CreateTrackerDelegate: AnyObject{
+    func didCreateNewTracker(_ tracker: Tracker)
+}
+
 final class CreateTrackerViewController: UIViewController{
+    
+    weak var delegate: CreateTrackerDelegate?
     
     let habitButton = UIButton()
     let irregularEventButton = UIButton()
@@ -79,7 +85,8 @@ final class CreateTrackerViewController: UIViewController{
     }
     
     @objc  func didTapHabitButton() {
-        let newVC = NewHabitVC()
+        let newVC = NewHabitViewController()
+        newVC.delegate = self
         newVC.modalPresentationStyle = .popover
         present(newVC, animated: true, completion: nil)
     }
@@ -88,5 +95,11 @@ final class CreateTrackerViewController: UIViewController{
         let newVC = CreateNewIrregularEventViewController()
         newVC.modalPresentationStyle = .popover
         present(newVC, animated: true, completion: nil)
+    }
+}
+
+extension CreateTrackerViewController: NewHabitViewControllerDelegate{
+    func didCreateNewHabit(_ tracker: Tracker) {
+        delegate?.didCreateNewTracker(tracker)
     }
 }

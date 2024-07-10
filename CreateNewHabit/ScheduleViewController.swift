@@ -7,7 +7,18 @@
 
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func didSelectDays(_ days: [DayOfWeek])
+}
+
+protocol ScheduleCellDelegate: AnyObject {
+    func switchButtonClicked(to isSelected: Bool, of weekDay: DayOfWeek)
+}
+
 class ScheduleViewController: UIViewController {
+    
+    weak var delegate: ScheduleViewControllerDelegate?
+    private var selectedWeekDays: Set<DayOfWeek> = []
 
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
@@ -48,6 +59,12 @@ class ScheduleViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         setUpView()
+        
+    }
+    
+    deinit {
+        selectedWeekDays.removeAll()
+        print("SelectedWeekDays array cleared!")
     }
 
     // MARK: - Setup UI
@@ -58,6 +75,8 @@ class ScheduleViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(doneButton)
         view.addSubview(tableView)
+        
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         // Setup constraints
         NSLayoutConstraint.activate([
@@ -77,12 +96,32 @@ class ScheduleViewController: UIViewController {
             tableView.heightAnchor.constraint(equalToConstant: 525)
         ])
     }
+    
+    @objc private func doneButtonTapped() {
+        let weekDays = Array(selectedWeekDays)
+        print("Selected days: \(weekDays)")
+        delegate?.didSelectDays(weekDays)
+        print("Delegate method called")
+        self.dismiss(animated: true) {
+            print("ScheduleViewController dismissed")
+        }
+    }
 }
 
-extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
+extension ScheduleViewController: ScheduleCellDelegate {
+    func switchButtonClicked(to isSelected: Bool, of weekDay: DayOfWeek) {
+        if isSelected {
+            selectedWeekDays.insert(weekDay)
+        } else {
+            selectedWeekDays.remove(weekDay)
+        }
+    }
+}
+
+extension ScheduleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        return DayOfWeek.allCases.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -90,29 +129,15 @@ extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath)
-        switch indexPath.row {
-        case 0:
-            cell.textLabel?.text = "Понедельник"
-        case 1:
-            cell.textLabel?.text = "Вторник"
-        case 2:
-            cell.textLabel?.text = "Среда"
-        case 3:
-            cell.textLabel?.text = "Четверг"
-        case 4:
-            cell.textLabel?.text = "Пятница"
-        case 5:
-            cell.textLabel?.text = "Суббота"
-        case 6:
-            cell.textLabel?.text = "Воскресенье"
-        default:
-            break
-        }
-        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
-        cell.backgroundColor = .clear
-        cell.accessoryType = .none
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell", for: indexPath) as? SwitchTableViewCell else { fatalError("Не удалось найти ячейку ScheduleCell") }
+        cell.delegate = self
+        cell.selectionStyle = .none
+        let weekDay = DayOfWeek.allCases[indexPath.row]
+        cell.configureCell(
+            with: weekDay,
+            isLastCell: indexPath.row == 6,
+            isSelected: selectedWeekDays.contains(weekDay)
+        )
         return cell
     }
     
@@ -123,37 +148,95 @@ extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView(frame: .zero)
     }
-    
+}
+
+extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // Handle cell selection
     }
 }
 
 class SwitchTableViewCell: UITableViewCell {
-    let switchControl: UISwitch = {
-        let switchControl = UISwitch()
-        switchControl.translatesAutoresizingMaskIntoConstraints = false
-        return switchControl
+    weak var delegate: ScheduleCellDelegate?
+    
+    private var weekDay: DayOfWeek?
+    
+    private lazy var cellTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var switchButton: UISwitch = {
+        let switcher = UISwitch()
+        switcher.onTintColor = .systemBlue
+        switcher.addTarget(self, action: #selector(switchButtonTapped(_:)), for: .valueChanged)
+        switcher.translatesAutoresizingMaskIntoConstraints = false
+        return switcher
+    }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        setupViews()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+        fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
-        contentView.addSubview(switchControl)
+    func configureCell(with weekDay: DayOfWeek, isLastCell: Bool, isSelected: Bool) {
+        self.weekDay = weekDay
+        cellTitleLabel.text = weekDay.rawValue
+        separatorView.isHidden = isLastCell
+        switchButton.isOn = isSelected
+    }
+    
+    private func setupViews() {
+        contentView.backgroundColor = UIColor(named: "TextFieldBackgroung")
+        contentView.addSubview(cellTitleLabel)
+        contentView.addSubview(switchButton)
+        contentView.addSubview(separatorView)
+    }
+    
+    private func setupConstraints() {
+        let contentViewHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: 75)
+        contentViewHeightConstraint.isActive = true
         
         NSLayoutConstraint.activate([
-            switchControl.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            switchControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            cellTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 26),
+            cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            cellTitleLabel.heightAnchor.constraint(equalToConstant: 22),
+            
+            contentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            
+            switchButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            switchButton.centerYAnchor.constraint(equalTo: cellTitleLabel.centerYAnchor),
+            
+            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
+            separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+
+    
+    @objc private func switchButtonTapped(_ sender: UISwitch) {
+        guard let weekDay = weekDay else { return }
+        delegate?.switchButtonClicked(to: sender.isOn, of: weekDay)
+    }
 }
+
 

@@ -101,7 +101,6 @@ class NewHabitVC: UIViewController {
         button.layer.borderColor = UIColor.red.cgColor
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -151,6 +150,8 @@ class NewHabitVC: UIViewController {
         backgroundView.addSubview(colorLabel)
         backgroundView.addSubview(emojiCollectionView)
         backgroundView.addSubview(colorCollectionView)
+        
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
         let width = (view.frame.width - 48) / 2
         // Setup constraints

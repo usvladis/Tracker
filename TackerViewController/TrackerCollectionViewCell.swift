@@ -56,8 +56,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             backgroundEmojiView.widthAnchor.constraint(equalToConstant: 24),
             backgroundEmojiView.heightAnchor.constraint(equalToConstant: 24),
-            backgroundEmojiView.topAnchor.constraint(equalTo: backgroundCardView.topAnchor, constant: 8),
-            backgroundEmojiView.leadingAnchor.constraint(equalTo: backgroundCardView.leadingAnchor, constant: 8)
+            backgroundEmojiView.topAnchor.constraint(equalTo: backgroundCardView.topAnchor, constant: 12),
+            backgroundEmojiView.leadingAnchor.constraint(equalTo: backgroundCardView.leadingAnchor, constant: 12)
         ])
         
         // Configure emoji label
@@ -65,24 +65,24 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         backgroundEmojiView.addSubview(emojiLabel)
         
         NSLayoutConstraint.activate([
-            emojiLabel.widthAnchor.constraint(equalToConstant: 24),
-            emojiLabel.heightAnchor.constraint(equalToConstant: 24),
-            emojiLabel.topAnchor.constraint(equalTo: backgroundCardView.topAnchor, constant: 8),
-            emojiLabel.leadingAnchor.constraint(equalTo: backgroundCardView.leadingAnchor, constant: 8)
+            emojiLabel.centerXAnchor.constraint(equalTo: backgroundEmojiView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: backgroundEmojiView.centerYAnchor)
+            
         ])
         
         // Configure title label
         titleLabel.font = UIFont(name: "YSDisplay-Medium", size: 12)
         titleLabel.textColor = .white
-        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .left
+        titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         backgroundCardView.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 4),
-            titleLabel.leadingAnchor.constraint(equalTo: backgroundCardView.leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: backgroundCardView.trailingAnchor, constant: -8),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: backgroundCardView.bottomAnchor, constant: -8)
+            titleLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: backgroundCardView.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: backgroundCardView.trailingAnchor, constant: -12),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: backgroundCardView.bottomAnchor, constant: -12)
         ])
         
         // Configure days label

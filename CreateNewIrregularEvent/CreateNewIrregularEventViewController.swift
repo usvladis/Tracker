@@ -49,7 +49,6 @@ class CreateNewIrregularEventViewController: UIViewController {
         button.layer.borderColor = UIColor.red.cgColor
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -81,6 +80,8 @@ class CreateNewIrregularEventViewController: UIViewController {
         view.addSubview(cancelButton)
         view.addSubview(createButton)
         view.addSubview(tableView)
+        
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
         let width = (view.frame.width - 48) / 2
         // Setup constraints

@@ -7,7 +7,21 @@
 
 import UIKit
 
-class NewHabitViewController: UIViewController {
+protocol NewHabitViewControllerDelegate: AnyObject {
+    func didCreateNewHabit(_ tracker: Tracker)
+}
+
+class NewHabitViewController: UIViewController, ScheduleViewControllerDelegate {
+    
+    weak var scheduleViewControllerDelegate: ScheduleViewControllerDelegate?
+    weak var delegate: NewHabitViewControllerDelegate?
+    
+    private var selectedDays: [DayOfWeek] = []
+    
+    private var habit: [(name: String, pickedSettings: String)] = [
+        (name: "Категория", pickedSettings: ""),
+        (name: "Расписание", pickedSettings: "")
+    ]
 
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
@@ -25,8 +39,19 @@ class NewHabitViewController: UIViewController {
         textField.font = UIFont(name: "YSDisplay-Medium", size: 17)
         textField.backgroundColor = UIColor(named: "TextFieldColor")
         textField.layer.cornerRadius = 10
+        textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
+    }()
+    
+    private lazy var clearTextFieldButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "error_clear"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 17, height: 17)
+        button.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(clearTextFieldButtonClicked), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let tableView: UITableView = {
@@ -49,7 +74,7 @@ class NewHabitViewController: UIViewController {
         button.layer.borderColor = UIColor.red.cgColor
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        
         return button
     }()
     
@@ -82,6 +107,10 @@ class NewHabitViewController: UIViewController {
         view.addSubview(createButton)
         view.addSubview(tableView)
         
+        nameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        
         let width = (view.frame.width - 48) / 2
         // Setup constraints
         NSLayoutConstraint.activate([
@@ -112,7 +141,15 @@ class NewHabitViewController: UIViewController {
     }
     
     @objc private func cancelButtonTapped() {
+        selectedDays.removeAll()
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func createButtonTapped() {
+        guard let trackerTitle = nameTextField.text else {return}
+        let newTracker = Tracker(id: UUID(), title: trackerTitle, color: .cSelection13, emoji: "🫥", schedule: selectedDays)
+        delegate?.didCreateNewHabit(newTracker)
+        dismiss(animated: true)
     }
     
     private func navigateToCategory() {
@@ -120,10 +157,48 @@ class NewHabitViewController: UIViewController {
     }
     
     private func navigateToSchedule() {
-        // Ваша логика перехода к экрану "Расписание"
         let scheduleViewController = ScheduleViewController()
+        // Устанавливаем текущий контроллер как делегата
+        scheduleViewController.delegate = self
+        print("Delegate set: \(scheduleViewController.delegate != nil)")
         scheduleViewController.modalPresentationStyle = .popover
         present(scheduleViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func textFieldChanged(_ textField: UITextField) {
+        if let text = textField.text, !text.isEmpty {
+            clearTextFieldButton.isHidden = false
+        } else {
+            clearTextFieldButton.isHidden = true
+        }
+        checkIfCorrect()
+    }
+    
+    @objc private func clearTextFieldButtonClicked() {
+        nameTextField.text = ""
+        clearTextFieldButton.isHidden = true
+    }
+    
+    private func checkIfCorrect() {
+        if let text = nameTextField.text, !text.isEmpty && !selectedDays.isEmpty {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .black
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = .gray
+        }
+    }
+    
+    func didSelectDays(_ days: [DayOfWeek]) {
+        selectedDays = days
+        print("didSelectDays called with days: \(days)")
+        let schedule = days.isEmpty ? "" : days.map { $0.shortDayName }.joined(separator: ", ")
+        habit[1].pickedSettings = schedule
+        print("Updated pickedSettings: \(habit[1].pickedSettings)")
+        tableView.reloadData()
+        dismiss(animated: true) {
+            print("NewHabitViewController dismissed")
+        }
     }
 }
 
@@ -138,14 +213,13 @@ extension NewHabitViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        if indexPath.row == 0 {
-            cell.textLabel?.text = "Категория"
-        } else if indexPath.row == 1 {
-            cell.textLabel?.text = "Расписание"
-        }
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        cell.textLabel?.text = habit[indexPath.row].name
+        cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.textColor = .gray
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         return cell
@@ -160,12 +234,15 @@ extension NewHabitViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             navigateToCategory()
-        } else if indexPath.row == 1 {
+        case 1:
             navigateToSchedule()
+        default:
+            break
         }
+        tableView.deselectRow(at: indexPath, animated: true)
+        checkIfCorrect()
     }
 }
-
