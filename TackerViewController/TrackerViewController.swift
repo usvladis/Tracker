@@ -201,7 +201,6 @@ final class TrackerViewController: UIViewController{
     }
     
     private func setUpSearchBar() {
-        searchBar.placeholder = "Храни Господь Практикум"
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
         
