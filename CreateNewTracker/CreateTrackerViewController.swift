@@ -85,7 +85,7 @@ final class CreateTrackerViewController: UIViewController{
     }
     
     @objc  func didTapHabitButton() {
-        let newVC = NewHabitViewController()
+        let newVC = NewHabitVC()
         newVC.delegate = self
         newVC.modalPresentationStyle = .popover
         present(newVC, animated: true, completion: nil)
