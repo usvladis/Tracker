@@ -251,6 +251,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     }
     
     @objc private func createButtonTapped() {
+        print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
         let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: selectedDays)
         trackerVC.createNewTracker(tracker: newTracker)

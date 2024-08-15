@@ -118,11 +118,10 @@ final class TrackerViewController: UIViewController{
         appendTrackerInVisibleTrackers(weekday: dayOfWeek)
         
         // Удаление пустых категорий
-        visibleTrackers = visibleTrackers.filter { !$0.trackers.isEmpty }
+        //visibleTrackers = visibleTrackers.filter { !$0.trackers.isEmpty }
+        collectionView.reloadData()
         
         updatePlaceholderVisibility()
-        
-        collectionView.reloadData()
     }
     
     @objc private func addButtonTapped() {
@@ -148,7 +147,10 @@ final class TrackerViewController: UIViewController{
     }
     
     private func updatePlaceholderVisibility() {
-        if visibleTrackers.isEmpty || visibleTrackers.allSatisfy({ $0.trackers.isEmpty }) {
+        let allTrackersEmpty = checkIsTrackerRepoEmpty()
+        let visibleTrackersEmpty = checkIsVisibleEmpty()
+        
+        if allTrackersEmpty || visibleTrackersEmpty {
             setupImageView() // Отображаем плейсхолдер-картинку
             descriptionLabel.isHidden = false
             imageMock.isHidden = false
@@ -158,24 +160,43 @@ final class TrackerViewController: UIViewController{
         }
     }
     
+    func checkIsTrackerRepoEmpty() -> Bool {
+      categories[0].trackers.isEmpty
+    }
+
+    func checkIsVisibleEmpty() -> Bool {
+      if visibleTrackers.isEmpty {
+        return true
+      }
+      if visibleTrackers[0].trackers.isEmpty {
+        return true
+      } else {
+        return false
+      }
+    }
+    
     private func toggleTrackerCompletion(for tracker: Tracker) {
         let today = Date()
         let selectedDate = datePicker.date
-        if Calendar.current.compare(today, to: Date(), toGranularity: .day) == .orderedDescending {
-            // Do not allow marking future dates
+        
+        if Calendar.current.compare(selectedDate, to: today, toGranularity: .day) == .orderedDescending {
+            // Не разрешать отмечать будущие даты
             return
         }
-        if datePicker.date <= Date() {
-            if let index = completedTrackers.firstIndex(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
-                // Tracker is already completed for selected date, so remove it
-                completedTrackers.remove(at: index)
-            } else {
-                // Tracker is not completed for today, so add it
-                let record = TrackerRecord(trackerId: tracker.id, date: selectedDate)
-                completedTrackers.append(record)
-            }
-            collectionView.reloadData()
+        
+        if let index = completedTrackers.firstIndex(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }) {
+            // Трекер уже выполнен на выбранную дату, удаляем его из списка выполненных
+            let record = completedTrackers[index]
+            completedTrackers.remove(at: index)
+            trackerRecordStore.deleteRecord(for: record)  // Удаление записи из Core Data
+        } else {
+            // Трекер не выполнен на выбранную дату, добавляем его в список выполненных
+            let record = TrackerRecord(trackerId: tracker.id, date: selectedDate)
+            completedTrackers.append(record)
+            trackerRecordStore.addNewRecord(from: record)  // Добавление записи в Core Data
         }
+        
+        collectionView.reloadData()
     }
 //MARK: - SetUpUIView
     private func setUpView() {
@@ -309,6 +330,7 @@ extension TrackerViewController: CreateTrackerDelegate {
     }
     
     func createNewTracker(tracker: Tracker) {
+        print("createNewTracker asked")
         var trackers: [Tracker] = []
         guard let list = categories.first else {return}
         for tracker in list.trackers{
@@ -316,7 +338,6 @@ extension TrackerViewController: CreateTrackerDelegate {
         }
         trackers.append(tracker)
         categories = [TrackerCategory(title: "Важное", trackers: trackers)]
-        filterTrackersForCurrentDay()
     }
 }
 
