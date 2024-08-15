@@ -253,7 +253,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     @objc private func createButtonTapped() {
         guard let trackerTitle = nameTextField.text else {return}
         let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: selectedDays)
-        //trackerVC.createNewTracker(tracker: newTracker)
+        trackerVC.createNewTracker(tracker: newTracker)
         delegate?.didCreateNewHabit(newTracker)
         dismiss(animated: true)
     }
@@ -408,6 +408,7 @@ extension NewHabitVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
             }
             selectedColor = colorData[indexPath.item]
         }
+        checkIfCorrect()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -420,5 +421,6 @@ extension NewHabitVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
                 cell.setSelectedBorder(isSelected: false, color: .clear)
             }
         }
+        checkIfCorrect()
     }
 }
