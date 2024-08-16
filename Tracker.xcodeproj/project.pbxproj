@@ -786,7 +786,7 @@
 			);
 			currentVersion = 218DC62C2C6F997300603787 /* CoreDataModel.xcdatamodel */;
 			name = CoreDataModel.xcdatamodeld;
-			path = /Users/vladislavusacev/Documents/Tracker/CoreData/CoreDataModel.xcdatamodeld;
+			path = CoreDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
