@@ -148,6 +148,11 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
         colorCollectionView.dataSource = self
         colorCollectionView.delegate = self
         colorCollectionView.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.reuseIdentifier)
+        nameTextField.delegate = self
+        // Добавляем жест для скрытия клавиатуры при нажатии на свободное пространство
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
         setUpView()
     }
     
@@ -423,5 +428,16 @@ extension NewHabitVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
             }
         }
         checkIfCorrect()
+    }
+}
+
+extension NewHabitVC: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
