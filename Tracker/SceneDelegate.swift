@@ -14,27 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let trackerNavBarViewController = TrackerNavBarController()
-        trackerNavBarViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
-            image: UIImage(systemName: "circle.circle.fill"),
-            selectedImage: nil
-        )
         
-        let statsViewController = StatsViewController()
-        statsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
-            image: UIImage(systemName: "hare.fill"),
-            selectedImage: nil
-        )
-        
-        // Создаем TabBarController и добавляем контроллеры
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [trackerNavBarViewController, statsViewController]
-                
-        // Устанавливаем TabBarController как корневой ViewController
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = tabBarController
+        window?.rootViewController = OnboardingViewController()
         window?.makeKeyAndVisible()
     }
 

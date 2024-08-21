@@ -28,6 +28,10 @@
 		218881592C2DEC460032D98E /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881582C2DEC450032D98E /* TrackerViewController.swift */; };
 		2188815C2C2DEC580032D98E /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188815B2C2DEC580032D98E /* StatsViewController.swift */; };
 		218DC62D2C6F997300603787 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 218DC62B2C6F997300603787 /* CoreDataModel.xcdatamodeld */; };
+		218DC6522C74B42800603787 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6512C74B42800603787 /* OnboardingViewController.swift */; };
+		218DC6542C74B49300603787 /* RedPadeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6532C74B49300603787 /* RedPadeViewController.swift */; };
+		218DC6562C74B4A300603787 /* BluePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6552C74B4A300603787 /* BluePageViewController.swift */; };
+		218DC6592C760A0400603787 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6582C760A0400603787 /* TabBarViewController.swift */; };
 		219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */; };
 		219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */; };
 		219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */; };
@@ -83,6 +87,10 @@
 		218881582C2DEC450032D98E /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		2188815B2C2DEC580032D98E /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		218DC62C2C6F997300603787 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		218DC6512C74B42800603787 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		218DC6532C74B49300603787 /* RedPadeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPadeViewController.swift; sourceTree = "<group>"; };
+		218DC6552C74B4A300603787 /* BluePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePageViewController.swift; sourceTree = "<group>"; };
+		218DC6582C760A0400603787 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitVC.swift; sourceTree = "<group>"; };
 		219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
@@ -154,6 +162,8 @@
 		218881142C2DCEEE0032D98E = {
 			isa = PBXGroup;
 			children = (
+				218DC6572C7609BB00603787 /* TabBarViewController */,
+				218DC6502C74B40000603787 /* Onboarding */,
 				211C4B1E2C6CF0450022155F /* CoreData */,
 				219AB67D2C37ECA000F0B613 /* Emoji & Color Cell */,
 				219AB6782C36B18100F0B613 /* CreateNewIrregularEvent */,
@@ -228,6 +238,24 @@
 				2188815B2C2DEC580032D98E /* StatsViewController.swift */,
 			);
 			path = StatsViewController;
+			sourceTree = "<group>";
+		};
+		218DC6502C74B40000603787 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				218DC6512C74B42800603787 /* OnboardingViewController.swift */,
+				218DC6532C74B49300603787 /* RedPadeViewController.swift */,
+				218DC6552C74B4A300603787 /* BluePageViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		218DC6572C7609BB00603787 /* TabBarViewController */ = {
+			isa = PBXGroup;
+			children = (
+				218DC6582C760A0400603787 /* TabBarViewController.swift */,
+			);
+			path = TabBarViewController;
 			sourceTree = "<group>";
 		};
 		219AB6782C36B18100F0B613 /* CreateNewIrregularEvent */ = {
@@ -401,6 +429,9 @@
 				210E27282C34A63700189D83 /* ScheduleViewController.swift in Sources */,
 				219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */,
 				21EDABA42C3042A700C2CD21 /* TrackerCategory.swift in Sources */,
+				218DC6592C760A0400603787 /* TabBarViewController.swift in Sources */,
+				218DC6542C74B49300603787 /* RedPadeViewController.swift in Sources */,
+				218DC6562C74B4A300603787 /* BluePageViewController.swift in Sources */,
 				219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */,
 				211C4B252C6CF4E40022155F /* TrackerStore.swift in Sources */,
 				2188812B2C2DCEEE0032D98E /* Tracker.xcdatamodeld in Sources */,
@@ -409,6 +440,7 @@
 				218881252C2DCEEE0032D98E /* ViewController.swift in Sources */,
 				21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */,
 				218881212C2DCEEE0032D98E /* AppDelegate.swift in Sources */,
+				218DC6522C74B42800603787 /* OnboardingViewController.swift in Sources */,
 				211C4B202C6CF0450022155F /* UIColorMarshalling.swift in Sources */,
 				21FA630E2C31874600099541 /* TrackerCollectionViewCell.swift in Sources */,
 				218DC62D2C6F997300603787 /* CoreDataModel.xcdatamodeld in Sources */,
@@ -785,7 +817,6 @@
 				218DC62C2C6F997300603787 /* CoreDataModel.xcdatamodel */,
 			);
 			currentVersion = 218DC62C2C6F997300603787 /* CoreDataModel.xcdatamodel */;
-			name = CoreDataModel.xcdatamodeld;
 			path = CoreDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
