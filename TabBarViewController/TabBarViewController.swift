@@ -17,7 +17,7 @@ class TabBarViewController: UITabBarController {
     }
     
     private func configureTabBar() {
-        let trackerViewController = TrackerViewController()
+        let trackerViewController = TrackerNavBarController()
         let statisticsViewController = StatsViewController()
         
         trackerViewController.tabBarItem = UITabBarItem(
