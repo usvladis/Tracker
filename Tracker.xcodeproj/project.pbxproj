@@ -32,6 +32,7 @@
 		218DC6542C74B49300603787 /* RedPadeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6532C74B49300603787 /* RedPadeViewController.swift */; };
 		218DC6562C74B4A300603787 /* BluePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6552C74B4A300603787 /* BluePageViewController.swift */; };
 		218DC6592C760A0400603787 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC6582C760A0400603787 /* TabBarViewController.swift */; };
+		218DC65D2C77421400603787 /* TrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218DC65C2C77421400603787 /* TrackerViewModel.swift */; };
 		219AB67A2C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */; };
 		219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */; };
 		219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */; };
@@ -91,6 +92,7 @@
 		218DC6532C74B49300603787 /* RedPadeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPadeViewController.swift; sourceTree = "<group>"; };
 		218DC6552C74B4A300603787 /* BluePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluePageViewController.swift; sourceTree = "<group>"; };
 		218DC6582C760A0400603787 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		218DC65C2C77421400603787 /* TrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewModel.swift; sourceTree = "<group>"; };
 		219AB6792C36B1CE00F0B613 /* CreateNewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitVC.swift; sourceTree = "<group>"; };
 		219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */,
 				21FA630D2C31874600099541 /* TrackerCollectionViewCell.swift */,
 				210E271F2C345AAA00189D83 /* TrackersHeaderReusableView.swift */,
+				218DC65C2C77421400603787 /* TrackerViewModel.swift */,
 			);
 			path = TackerViewController;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				211C4B202C6CF0450022155F /* UIColorMarshalling.swift in Sources */,
 				21FA630E2C31874600099541 /* TrackerCollectionViewCell.swift in Sources */,
 				218DC62D2C6F997300603787 /* CoreDataModel.xcdatamodeld in Sources */,
+				218DC65D2C77421400603787 /* TrackerViewModel.swift in Sources */,
 				21EDABA62C3042B000C2CD21 /* TrackerRecord.swift in Sources */,
 				210E27262C348DFF00189D83 /* NewHabitViewController.swift in Sources */,
 				21EDABA22C30428B00C2CD21 /* Tracker.swift in Sources */,
