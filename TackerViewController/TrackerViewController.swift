@@ -235,6 +235,18 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
         let width = availableWidth / 2
         return CGSize(width: width, height: 148)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind{
+        case UICollectionView.elementKindSectionHeader:
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TrackersHeaderReusableView", for: indexPath) as? TrackersHeaderReusableView else {
+                return UICollectionReusableView()
+            }
+            view.titleLabel.text = viewModel.visibleTrackers[indexPath.section].title
+            return view
+        default: return UICollectionReusableView()
+        }
+    }
 }
 
 extension TrackerViewController: CreateTrackerDelegate {
