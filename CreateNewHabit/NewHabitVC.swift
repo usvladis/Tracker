@@ -265,7 +265,9 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     }
     
     private func navigateToCategory() {
-        // Ваша логика перехода к экрану "Категория"
+        let categoriesViewController = CategoriesViewController()
+        categoriesViewController.modalPresentationStyle = .popover
+        present(categoriesViewController, animated: true, completion: nil)
     }
     
     private func navigateToSchedule() {

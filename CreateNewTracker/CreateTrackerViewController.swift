@@ -39,10 +39,10 @@ final class CreateTrackerViewController: UIViewController{
         view.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
-            titleLabel.heightAnchor.constraint(equalToConstant: 100),
+            //titleLabel.heightAnchor.constraint(equalToConstant: 100),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
         ])
     }
     
