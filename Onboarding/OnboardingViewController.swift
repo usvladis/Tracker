@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OnboardingViewController: UIPageViewController {
+final class OnboardingViewController: UIPageViewController {
     lazy var pages: [UIViewController] = {
         let red = RedPadeViewController()
         let blue = BluePageViewController()
@@ -55,6 +55,15 @@ class OnboardingViewController: UIPageViewController {
             pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -134),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    func finishOnboarding() {
+        UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+        
+        // Закрытие онбординга и переход к главному экрану
+        let newVC = TabBarViewController()
+        newVC.modalPresentationStyle = .fullScreen
+        present(newVC, animated: true, completion: nil)
     }
 }
 

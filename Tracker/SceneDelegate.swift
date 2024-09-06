@@ -16,7 +16,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = OnboardingViewController()
+        // Проверяем, был ли уже показан онбординг
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+        
+        if !hasSeenOnboarding {
+            // Если онбординг не был показан, открываем его
+            let onboardingVC = OnboardingViewController()
+            window?.rootViewController = onboardingVC
+        } else {
+            // Если онбординг был показан, открываем главный экран
+            let mainVC = TabBarViewController() // Ваш главный экран
+            window?.rootViewController = mainVC
+        }
         window?.makeKeyAndVisible()
     }
 

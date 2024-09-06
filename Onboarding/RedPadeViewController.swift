@@ -76,8 +76,8 @@ class RedPadeViewController: UIViewController {
     
     @objc
     private func buttonTapped() {
-        let newVC = TabBarViewController()
-        newVC.modalPresentationStyle = .fullScreen
-        present(newVC, animated: true, completion: nil)
+        if let onboardingVC = self.parent as? OnboardingViewController {
+            onboardingVC.finishOnboarding()
+        }
     }
 }
