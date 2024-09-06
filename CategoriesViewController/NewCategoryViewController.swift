@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol NewCategoryViewControllerDelegate: AnyObject {
+    func newCategoryScreen(_ screen: NewCategoryViewController, didAddCategoryWithTitle title: String)
+}
+
 final class NewCategoryViewController: UIViewController {
+    
+    weak var delegate: NewCategoryViewControllerDelegate?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -90,7 +96,7 @@ final class NewCategoryViewController: UIViewController {
             // Показываем ошибку или сообщение пользователю
             return
         }
-        
+        delegate?.newCategoryScreen(self, didAddCategoryWithTitle: categoryTitle)
         navigationController?.popViewController(animated: true)
     }
 }

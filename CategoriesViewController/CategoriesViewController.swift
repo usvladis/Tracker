@@ -14,6 +14,7 @@ TODO: При выборе категории передавать ее на пр
 final class CategoriesViewController: UIViewController {
     
     private var categories: [TrackerCategory] = []
+    private let trackerCategoryStore = TrackerCategoryStore()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -134,6 +135,14 @@ final class CategoriesViewController: UIViewController {
             tableView.isHidden = false
             stackView.isHidden = true
         }
+    }
+}
+
+extension CategoriesViewController: NewCategoryViewControllerDelegate {
+    func newCategoryScreen(_ screen: NewCategoryViewController, didAddCategoryWithTitle title: String) {
+        let newCategory = TrackerCategory(title: title, trackers: [])
+        trackerCategoryStore.createCategory(newCategory)
+        categories.append(newCategory)
     }
 }
 

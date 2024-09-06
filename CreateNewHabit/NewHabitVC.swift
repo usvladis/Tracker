@@ -13,6 +13,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     weak var delegate: NewHabitViewControllerDelegate?
     var trackerVC = TrackerViewController()
     
+    private var selectedCategory: TrackerCategory?
     private var selectedDays: [DayOfWeek] = []
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor = .clear
@@ -319,7 +320,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
 extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return habit.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -328,14 +329,22 @@ extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = habit[indexPath.row].name
-        cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
-        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
-        cell.detailTextLabel?.textColor = .gray
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
+        let item = "\(habit[indexPath.row].name)"
+        cell.textLabel?.text = item
+        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.textColor = .gray
+        if item == "Категория" {
+            cell.detailTextLabel?.text = selectedCategory?.title
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        }
+        if item == "Расписание" {
+            cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        }
+        
         return cell
     }
     

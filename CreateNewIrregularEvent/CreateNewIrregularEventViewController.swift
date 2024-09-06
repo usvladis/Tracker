@@ -12,6 +12,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     weak var delegate: NewHabitViewControllerDelegate?
     var trackerVC = TrackerViewController()
     
+    private var selectedCategory: TrackerCategory?
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor = .clear
     
@@ -256,7 +257,11 @@ class CreateNewIrregularEventViewController: UIViewController {
     @objc private func createButtonTapped() {
         print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
-        let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: DayOfWeek.allCases)
+        let newTracker = Tracker(id: UUID(), 
+                                 title: trackerTitle, 
+                                 color: selectedColor,
+                                 emoji: selectedEmoji,
+                                 schedule: DayOfWeek.allCases)
         //trackerVC.createNewTracker(tracker: newTracker)
         delegate?.didCreateNewHabit(newTracker)
         dismiss(animated: true)
@@ -283,7 +288,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     }
     
     private func checkIfCorrect() {
-        if let text = nameTextField.text, !text.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear {
+        if let text = nameTextField.text, !text.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear && selectedCategory != nil {
             createButton.isEnabled = true
             createButton.backgroundColor = .black
         } else {
@@ -310,6 +315,9 @@ extension CreateNewIrregularEventViewController: UITableViewDelegate, UITableVie
         }
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.text = selectedCategory?.title
+        cell.detailTextLabel?.textColor = .gray
+        cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         return cell
