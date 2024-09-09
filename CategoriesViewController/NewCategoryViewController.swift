@@ -97,6 +97,6 @@ final class NewCategoryViewController: UIViewController {
             return
         }
         delegate?.newCategoryScreen(self, didAddCategoryWithTitle: categoryTitle)
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
 }

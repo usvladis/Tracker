@@ -7,8 +7,12 @@
 
 import UIKit
 
+protocol NewHabitViewControllerDelegate: AnyObject {
+    func didCreateNewHabit(_ tracker: Tracker, _ category: String)
+}
+
 class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
-    
+        
     weak var scheduleViewControllerDelegate: ScheduleViewControllerDelegate?
     weak var delegate: NewHabitViewControllerDelegate?
     var trackerVC = TrackerViewController()
@@ -259,14 +263,19 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     @objc private func createButtonTapped() {
         print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
-        let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: selectedDays)
+        let newTracker = Tracker(id: UUID(), 
+                                 title: trackerTitle,
+                                 color: selectedColor,
+                                 emoji: selectedEmoji,
+                                 schedule: selectedDays)
         //trackerVC.createNewTracker(tracker: newTracker)
-        delegate?.didCreateNewHabit(newTracker)
+        delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }
     
     private func navigateToCategory() {
         let categoriesViewController = CategoriesViewController()
+        categoriesViewController.delegate = self
         categoriesViewController.modalPresentationStyle = .popover
         present(categoriesViewController, animated: true, completion: nil)
     }
@@ -450,5 +459,13 @@ extension NewHabitVC: UITextFieldDelegate{
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension NewHabitVC: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+        checkIfCorrect()
     }
 }

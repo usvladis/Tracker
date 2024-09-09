@@ -47,7 +47,7 @@ extension TrackerCategoryStore {
   func decodingCategory(from trackerCategoryCoreData: TrackerCategoryCD) -> TrackerCategory? {
       guard let title = trackerCategoryCoreData.title else { return nil }
       let trackers = (trackerCategoryCoreData.trackers?.allObjects as? [TrackerCD])?.compactMap { trackerStore.decodingTrackers(from: $0) } ?? []
-      return TrackerCategory(title: "Важное", trackers: trackers)
+      return TrackerCategory(title: title, trackers: trackers)
   }
 
 

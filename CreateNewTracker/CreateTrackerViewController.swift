@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CreateTrackerDelegate: AnyObject{
-    func didCreateNewTracker(_ tracker: Tracker)
+    func didCreateNewTracker(_ tracker: Tracker, _ category: String)
 }
 
 final class CreateTrackerViewController: UIViewController{
@@ -100,7 +100,7 @@ final class CreateTrackerViewController: UIViewController{
 }
 
 extension CreateTrackerViewController: NewHabitViewControllerDelegate{
-    func didCreateNewHabit(_ tracker: Tracker) {
-        delegate?.didCreateNewTracker(tracker)
+    func didCreateNewHabit(_ tracker: Tracker, _ category: String) {
+        delegate?.didCreateNewTracker(tracker, category)
     }
 }

@@ -250,7 +250,7 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
 }
 
 extension TrackerViewController: CreateTrackerDelegate {
-    func didCreateNewTracker(_ tracker: Tracker) {
-        viewModel.createNewTracker(tracker)  // Теперь используется метод ViewModel
+    func didCreateNewTracker(_ tracker: Tracker, _ category: String) {
+        viewModel.createNewTracker(tracker, category )
     }
 }

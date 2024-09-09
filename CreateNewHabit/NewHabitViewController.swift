@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol NewHabitViewControllerDelegate: AnyObject {
-    func didCreateNewHabit(_ tracker: Tracker)
-}
-
 class NewHabitViewController: UIViewController, ScheduleViewControllerDelegate {
     
     weak var scheduleViewControllerDelegate: ScheduleViewControllerDelegate?
@@ -148,7 +144,7 @@ class NewHabitViewController: UIViewController, ScheduleViewControllerDelegate {
     @objc private func createButtonTapped() {
         guard let trackerTitle = nameTextField.text else {return}
         let newTracker = Tracker(id: UUID(), title: trackerTitle, color: .cSelection13, emoji: "🫥", schedule: selectedDays)
-        delegate?.didCreateNewHabit(newTracker)
+        //delegate?.didCreateNewHabit(newTracker)
         dismiss(animated: true)
     }
     

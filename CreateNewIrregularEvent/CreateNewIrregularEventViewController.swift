@@ -263,12 +263,13 @@ class CreateNewIrregularEventViewController: UIViewController {
                                  emoji: selectedEmoji,
                                  schedule: DayOfWeek.allCases)
         //trackerVC.createNewTracker(tracker: newTracker)
-        delegate?.didCreateNewHabit(newTracker)
+        delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }
     
     private func navigateToCategory() {
         let categoriesViewController = CategoriesViewController()
+        categoriesViewController.delegate = self
         categoriesViewController.modalPresentationStyle = .popover
         present(categoriesViewController, animated: true, completion: nil)
     }
@@ -422,3 +423,10 @@ extension CreateNewIrregularEventViewController: UITextFieldDelegate{
     }
 }
 
+extension CreateNewIrregularEventViewController: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+        checkIfCorrect()
+    }
+}

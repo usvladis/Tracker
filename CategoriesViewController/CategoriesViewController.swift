@@ -11,10 +11,15 @@ import UIKit
 TODO: При выборе категории передавать ее на предидущий экран
 Настроить отображение tableView с категориями
 */
-final class CategoriesViewController: UIViewController {
+
+protocol CategoryViewControllerDelegate: AnyObject {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory)
+}
+
+final class CategoriesViewController: UIViewController, NewCategoryViewControllerDelegate {
     
-    private var categories: [TrackerCategory] = []
-    private let trackerCategoryStore = TrackerCategoryStore()
+    weak var delegate: CategoryViewControllerDelegate?
+    private var viewModel: CategoryViewModel!
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -27,7 +32,7 @@ final class CategoriesViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "switchCell")
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier)
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = 75
         tableView.isScrollEnabled = true
@@ -60,13 +65,37 @@ final class CategoriesViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpUI()
+        setupViewModel()
+        setupBindings()
+        loadCategories()
+    }
+    
+    private func setupViewModel() {
+        viewModel = CategoryViewModel(store: TrackerCategoryStore())
+    }
+
+    private func setupBindings() {
+        viewModel.onCategoriesChanged = { [weak self] categories in
+            self?.tableView.reloadData()
+            self?.mainScreenContent()
+        }
+
+        viewModel.onCategorySelected = { [weak self] category in
+            guard let self = self else { return }
+            self.delegate?.categoryScreen(self, didSelectedCategory: category)
+        }
+    }
+    
+    private func setUpUI() {
         setUpView()
         setupCategoryView()
-        mainScreenContent()
     }
     
     private func setUpView() {
         view.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
         
         // Add subviews
         view.addSubview(titleLabel)
@@ -122,13 +151,22 @@ final class CategoriesViewController: UIViewController {
     @objc
     private func addCategoryTapped() {
         let newCategoryViewController = NewCategoryViewController()
+        newCategoryViewController.delegate = self
         newCategoryViewController.modalPresentationStyle = .popover
         present(newCategoryViewController, animated: true)
         
     }
     
+    func newCategoryScreen(_ screen: NewCategoryViewController, didAddCategoryWithTitle title: String) {
+        viewModel.addCategory(title: title)
+    }
+
+    private func loadCategories() {
+        viewModel.loadCategories()
+    }
+    
     private func mainScreenContent() {
-        if categories.count == 0 {
+        if viewModel.numberOfCategories() == 0 {
             tableView.isHidden = true
             stackView.isHidden = false
         } else {
@@ -138,29 +176,20 @@ final class CategoriesViewController: UIViewController {
     }
 }
 
-extension CategoriesViewController: NewCategoryViewControllerDelegate {
-    func newCategoryScreen(_ screen: NewCategoryViewController, didAddCategoryWithTitle title: String) {
-        let newCategory = TrackerCategory(title: title, trackers: [])
-        trackerCategoryStore.createCategory(newCategory)
-        categories.append(newCategory)
-    }
-}
-
 extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return viewModel.numberOfCategories()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.reuseIdentifier, for: indexPath) as! CategoryTableViewCell
-        let category = categories[indexPath.row]
+        let category = viewModel.category(at: indexPath.row)
         cell.configure(with: category)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCategory = categories[indexPath.row]
-        
+        viewModel.selectCategory(at: indexPath.row)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.dismiss(animated: true)
         }

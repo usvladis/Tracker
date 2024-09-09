@@ -49,22 +49,28 @@ class TrackerViewModel {
     
     private func loadTrackersFromCoreData() {
         let storedTrackers = trackerStore.fetchTracker()
+        print("Loaded Trackers: \(storedTrackers)")
         let storedCategories = trackerCategoryStore.fetchAllCategories()
+        print("Loaded Categories: \(storedCategories.map { $0.title })")
         let storedRecords = trackerRecordStore.fetchAllRecords()
         
         completedTrackers = storedRecords.map { TrackerRecord(trackerId: $0.trackerId, date: $0.date) }
+        print("Loaded Completed Trackers: \(completedTrackers)")
         
         if !storedCategories.isEmpty {
             categories = storedCategories.compactMap { trackerCategoryStore.decodingCategory(from: $0) }
+            print("Decoded Categories: \(categories)")
         } else {
-            categories = [TrackerCategory(title: "Важное", trackers: storedTrackers)]
+            if !storedTrackers.isEmpty {
+                let newCategory = TrackerCategory(title: "Default Category", trackers: storedTrackers)
+                categories.append(newCategory)
+            }
         }
-        
         visibleTrackers = categories
         filterTrackersForCurrentDay()
     }
     
-    func appendTrackerInVisibleTrackers(weekday: Int) {
+    func appendTrackerInVisibleTrackers(for category: TrackerCategory, weekday: Int) {
         visibleTrackers.removeAll()
         var weekDayCase: DayOfWeek = .monday
         
@@ -87,31 +93,40 @@ class TrackerViewModel {
             break
         }
         
-        guard let firstCategory = categories.first else {
-            return
-        }
-        
         var uniqueTrackers = [UUID: Tracker]()
-        for tracker in firstCategory.trackers {
-            for day in tracker.schedule {
-                if day == weekDayCase {
-                    uniqueTrackers[tracker.id] = tracker
-                }
-            }
+        for tracker in category.trackers {
+          if tracker.schedule.contains(weekDayCase) {
+            uniqueTrackers[tracker.id] = tracker
+          }
         }
         
         let trackers = Array(uniqueTrackers.values)
-        if !trackers.isEmpty {
-            let category = TrackerCategory(title: "Важное", trackers: trackers)
-            visibleTrackers.append(category)
-        }
+        let updatedCategory = TrackerCategory(title: category.title, trackers: trackers)
+        visibleTrackers.append(category)
     }
     
     func filterTrackersForCurrentDay() {
-        let calendar = Calendar.current
-        let dayOfWeek = calendar.component(.weekday, from: selectedDate)
-        
-        appendTrackerInVisibleTrackers(weekday: dayOfWeek)
+        // Получаем текущий день недели как Int (например, 2 для понедельника)
+        let currentDayOfWeekInt = Calendar.current.component(.weekday, from: selectedDate)
+
+        // Преобразуем Int в DayOfWeek
+        guard let currentDayOfWeek = DayOfWeek.from(intValue: currentDayOfWeekInt) else {
+            return // Если день не распознан
+        }
+
+        // Создаем массив категорий, где трекеры фильтруются по текущему дню
+        visibleTrackers = categories.compactMap { category in
+            // Фильтруем трекеры в каждой категории по дням недели
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.schedule.contains(currentDayOfWeek)
+            }
+            
+            // Возвращаем категорию только если есть трекеры для текущего дня
+            return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }
+
+        // Обновляем UI
+        onVisibleTrackersChanged?(visibleTrackers)
     }
     
     func toggleTrackerCompletion(for tracker: Tracker) {
@@ -133,17 +148,27 @@ class TrackerViewModel {
     }
     
     // Добавляем метод createNewTracker
-    func createNewTracker(_ tracker: Tracker) {
+    func createNewTracker(_ tracker: Tracker, _ category: String) {
+        print("didCreateNewHabit asked")
+        createNewTracker(tracker: tracker)
+
+        if let _ = trackerStore.addNewTracker(from: tracker) {
+          trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: category)
+        } else {
+          print("Failed to save tracker")
+        }
+        
+        loadTrackersFromCoreData()  // Обновляем видимые трекеры
+    }
+    
+    func createNewTracker(tracker: Tracker) {
         var trackers: [Tracker] = []
-        if let firstCategory = categories.first {
-            trackers = firstCategory.trackers
+        guard let list = categories.first else { return }
+        for tracker in list.trackers {
+            trackers.append(tracker)
         }
         trackers.append(tracker)
-        
-        categories = [TrackerCategory(title: "Важное", trackers: trackers)]
-        trackerStore.addNewTracker(from: tracker)
-        trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: "Важное")
-        
-        filterTrackersForCurrentDay()  // Обновляем видимые трекеры
+        categories = [TrackerCategory(title: list.title, trackers: trackers)]
+        filterTrackersForCurrentDay()  // Добавьте эту строку
     }
 }
