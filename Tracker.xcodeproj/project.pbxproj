@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		210E27202C345AAA00189D83 /* TrackersHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210E271F2C345AAA00189D83 /* TrackersHeaderReusableView.swift */; };
 		210E27232C34687300189D83 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210E27222C34687300189D83 /* CreateTrackerViewController.swift */; };
-		210E27262C348DFF00189D83 /* NewHabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210E27252C348DFF00189D83 /* NewHabitViewController.swift */; };
 		210E27282C34A63700189D83 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210E27272C34A63700189D83 /* ScheduleViewController.swift */; };
 		211C4B1F2C6CF0450022155F /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C4B1C2C6CF0450022155F /* DaysValueTransformer.swift */; };
 		211C4B202C6CF0450022155F /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C4B1D2C6CF0450022155F /* UIColorMarshalling.swift */; };
@@ -68,7 +67,6 @@
 /* Begin PBXFileReference section */
 		210E271F2C345AAA00189D83 /* TrackersHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersHeaderReusableView.swift; sourceTree = "<group>"; };
 		210E27222C34687300189D83 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
-		210E27252C348DFF00189D83 /* NewHabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitViewController.swift; sourceTree = "<group>"; };
 		210E27272C34A63700189D83 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		211C4B1C2C6CF0450022155F /* DaysValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
 		211C4B1D2C6CF0450022155F /* UIColorMarshalling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 		210E27242C348DBE00189D83 /* CreateNewHabit */ = {
 			isa = PBXGroup;
 			children = (
-				210E27252C348DFF00189D83 /* NewHabitViewController.swift */,
 				210E27272C34A63700189D83 /* ScheduleViewController.swift */,
 				219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */,
 			);
@@ -468,7 +465,6 @@
 				218DC62D2C6F997300603787 /* CoreDataModel.xcdatamodeld in Sources */,
 				218DC65D2C77421400603787 /* TrackerViewModel.swift in Sources */,
 				21EDABA62C3042B000C2CD21 /* TrackerRecord.swift in Sources */,
-				210E27262C348DFF00189D83 /* NewHabitViewController.swift in Sources */,
 				21EDABA22C30428B00C2CD21 /* Tracker.swift in Sources */,
 				218881592C2DEC460032D98E /* TrackerViewController.swift in Sources */,
 				211C4B292C6CF6790022155F /* TrackerRecordStore.swift in Sources */,

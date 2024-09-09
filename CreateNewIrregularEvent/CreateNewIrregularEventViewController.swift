@@ -310,17 +310,20 @@ extension CreateNewIrregularEventViewController: UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
+            cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+            cell.textLabel?.textColor = .black
+            
+            // Устанавливаем текст категории в detailTextLabel
+            cell.detailTextLabel?.text = selectedCategory?.title
+            cell.detailTextLabel?.textColor = .gray
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+            
+            cell.backgroundColor = .clear
+            cell.accessoryType = .disclosureIndicator
         }
-        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
-        cell.detailTextLabel?.text = selectedCategory?.title
-        cell.detailTextLabel?.textColor = .gray
-        cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.backgroundColor = .clear
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
     

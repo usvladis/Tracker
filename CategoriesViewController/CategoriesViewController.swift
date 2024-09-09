@@ -32,14 +32,13 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier)
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = 75
         tableView.isScrollEnabled = true
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier)
         return tableView
     }()
     
@@ -185,9 +184,37 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.reuseIdentifier, for: indexPath) as! CategoryTableViewCell
         let category = viewModel.category(at: indexPath.row)
         cell.configure(with: category)
+        
+        // Сбросим маску на случай, если ячейка будет переиспользована
+        cell.layer.mask = nil
+        
+        // Создание переменной для хранения нужных углов
+        var corners: UIRectCorner = []
+        
+        // Если это первая ячейка, закругляем верхние углы
+        if indexPath.row == 0 {
+            corners.formUnion([.topLeft, .topRight])
+        }
+        
+        // Если это последняя ячейка, закругляем нижние углы
+        if indexPath.row == viewModel.numberOfCategories() - 1 {
+            corners.formUnion([.bottomLeft, .bottomRight])
+        }
+        
+        // Применяем закругления только если углы есть
+        if !corners.isEmpty {
+            // Обновляем layout после того, как ячейка добавлена
+            DispatchQueue.main.async {
+                let maskPath = UIBezierPath(roundedRect: cell.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: 16, height: 16))
+                let maskLayer = CAShapeLayer()
+                maskLayer.path = maskPath.cgPath
+                cell.layer.mask = maskLayer
+            }
+        }
+        
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectCategory(at: indexPath.row)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
