@@ -6,11 +6,6 @@
 //
 
 import UIKit
-/*
-Готов UI
-TODO: При выборе категории передавать ее на предидущий экран
-Настроить отображение tableView с категориями
-*/
 
 protocol CategoryViewControllerDelegate: AnyObject {
     func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory)
@@ -185,6 +180,9 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         let category = viewModel.category(at: indexPath.row)
         cell.configure(with: category)
         
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.addInteraction(interaction)
+        
         // Сбросим маску на случай, если ячейка будет переиспользована
         cell.layer.mask = nil
         
@@ -220,6 +218,66 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.dismiss(animated: true)
         }
+    }
+}
+
+extension CategoriesViewController: UIContextMenuInteractionDelegate {
+    
+    // Создаем меню при долгом нажатии на ячейку
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        
+        // Определяем индекс ячейки, которая была долгим нажатием
+        guard let cell = interaction.view as? CategoryTableViewCell,
+              let indexPath = tableView.indexPath(for: cell) else { return nil }
+        
+        let category = viewModel.category(at: indexPath.row)
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(title: "Редактировать", image: UIImage(systemName: "pencil")) { _ in
+                // Переход на экран редактирования
+                self.editCategory(category)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                // Удаление категории
+                self.deleteCategory(at: indexPath)
+            }
+            
+            // Возвращаем контекстное меню с опциями
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+    }
+    
+    private func editCategory(_ category: TrackerCategory) {
+        // Переход на экран редактирования категории
+        let editVC = EditCategoryViewController()
+        editVC.modalPresentationStyle = .popover
+        present(editVC, animated: true)
+    }
+    
+    private func deleteCategory(at indexPath: IndexPath) {
+        let category = viewModel.category(at: indexPath.row)
+        
+        // Создаем Alert Controller
+        let alertController = UIAlertController(title: "Эта категория точно не нужна?",
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        
+        // Добавляем кнопку "Удалить"
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+            // Удаляем категорию из ViewModel
+            self.viewModel.deleteCategory(at: indexPath.row)
+        }
+        
+        // Добавляем кнопку "Отменить"
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+        
+        // Добавляем действия в контроллер
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        // Показываем Alert Controller
+        present(alertController, animated: true, completion: nil)
     }
 }
 

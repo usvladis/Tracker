@@ -29,6 +29,16 @@ final class CategoryViewModel {
             trackerCategoryStore.decodingCategory(from: $0)
         }
     }
+    
+    func deleteCategory(at index: Int) {
+        // Удаляем категорию из Core Data
+        let category = categories[index]
+        trackerCategoryStore.deleteCategory(category)
+        NotificationCenter.default.post(name: NSNotification.Name("CategoryDeleted"), object: category)
+        // Обновляем локальный массив категорий и UI
+        categories.remove(at: index)
+        onCategoriesChanged?(categories)
+    }
 
     func addCategory(title: String) {
         let newCategory = TrackerCategory(title: title, trackers: [])

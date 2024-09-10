@@ -22,10 +22,15 @@ final class TrackerViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = TrackerViewModel()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCategoryDeleted(_:)), name: NSNotification.Name("CategoryDeleted"), object: nil)
         
         setUpView()
         setupBindings()
         viewModel.filterTrackersForCurrentDay()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupBindings() {
@@ -89,6 +94,12 @@ final class TrackerViewController: UIViewController{
         let filterCategoryVC = FilterCategoryViewController()
         filterCategoryVC.modalPresentationStyle = .popover
         present(filterCategoryVC, animated: true, completion: nil)
+    }
+    
+    @objc private func handleCategoryDeleted(_ notification: Notification) {
+        if let deletedCategory = notification.object as? TrackerCategory {
+            viewModel.deleteCategory(deletedCategory)
+        }
     }
     //MARK: - SetUpUIView
     private func setUpView() {

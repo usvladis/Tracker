@@ -64,9 +64,19 @@ extension TrackerCategoryStore {
     }
   }
 
-  private func fetchCategory(with title: String) -> TrackerCategoryCD? {
-    return fetchAllCategories().filter({$0.title == title}).first ?? nil
-  }
+    private func fetchCategory(with title: String) -> TrackerCategoryCD? {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCD> = TrackerCategoryCD.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results.first
+        } catch {
+            print("Failed to fetch category: \(error)")
+            return nil
+        }
+    }
+    
   func createCategoryAndAddTracker(_ tracker: Tracker, with titleCategory: String) {
       let category = fetchCategory(with: titleCategory) ?? createCategory(with: titleCategory)
       guard let trackerCoreData = trackerStore.addNewTracker(from: tracker) else { return }
@@ -85,7 +95,22 @@ extension TrackerCategoryStore {
       newCategory.trackers = NSSet(array: [])
       return newCategory
   }
-
+    
+    func deleteCategory(_ category: TrackerCategory) {
+        // Найдем категорию в Core Data
+        guard let categoryToDelete = fetchCategory(with: category.title) else { return }
+        
+        // Удалим категорию из контекста
+        context.delete(categoryToDelete)
+        
+        // Сохраним изменения в контексте
+        do {
+            try context.save()
+        } catch {
+            print("Failed to delete category: \(error)")
+        }
+    }
+    
 }
 
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {

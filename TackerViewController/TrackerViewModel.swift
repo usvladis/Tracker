@@ -70,6 +70,10 @@ class TrackerViewModel {
         filterTrackersForCurrentDay()
     }
     
+    func deleteCategory(_ category: TrackerCategory) {
+        loadTrackersFromCoreData() // Обновляем категории после удаления
+    }
+    
     func appendTrackerInVisibleTrackers(for category: TrackerCategory, weekday: Int) {
         visibleTrackers.removeAll()
         var weekDayCase: DayOfWeek = .monday
@@ -147,7 +151,6 @@ class TrackerViewModel {
         }
     }
     
-    // Добавляем метод createNewTracker
     func createNewTracker(_ tracker: Tracker, _ category: String) {
         print("didCreateNewHabit asked")
         createNewTracker(tracker: tracker)
@@ -158,7 +161,7 @@ class TrackerViewModel {
           print("Failed to save tracker")
         }
         
-        loadTrackersFromCoreData()  // Обновляем видимые трекеры
+        loadTrackersFromCoreData() 
     }
     
     func createNewTracker(tracker: Tracker) {
@@ -169,6 +172,6 @@ class TrackerViewModel {
         }
         trackers.append(tracker)
         categories = [TrackerCategory(title: list.title, trackers: trackers)]
-        filterTrackersForCurrentDay()  // Добавьте эту строку
+        filterTrackersForCurrentDay()
     }
 }
