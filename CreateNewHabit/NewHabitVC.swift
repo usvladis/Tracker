@@ -7,12 +7,17 @@
 
 import UIKit
 
+protocol NewHabitViewControllerDelegate: AnyObject {
+    func didCreateNewHabit(_ tracker: Tracker, _ category: String)
+}
+
 class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
-    
+        
     weak var scheduleViewControllerDelegate: ScheduleViewControllerDelegate?
     weak var delegate: NewHabitViewControllerDelegate?
     var trackerVC = TrackerViewController()
     
+    private var selectedCategory: TrackerCategory?
     private var selectedDays: [DayOfWeek] = []
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor = .clear
@@ -258,14 +263,21 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     @objc private func createButtonTapped() {
         print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
-        let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: selectedDays)
-        trackerVC.createNewTracker(tracker: newTracker)
-        delegate?.didCreateNewHabit(newTracker)
+        let newTracker = Tracker(id: UUID(), 
+                                 title: trackerTitle,
+                                 color: selectedColor,
+                                 emoji: selectedEmoji,
+                                 schedule: selectedDays)
+        //trackerVC.createNewTracker(tracker: newTracker)
+        delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }
     
     private func navigateToCategory() {
-        // Ваша логика перехода к экрану "Категория"
+        let categoriesViewController = CategoriesViewController()
+        categoriesViewController.delegate = self
+        categoriesViewController.modalPresentationStyle = .popover
+        present(categoriesViewController, animated: true, completion: nil)
     }
     
     private func navigateToSchedule() {
@@ -317,7 +329,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
 extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return habit.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -326,14 +338,22 @@ extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = habit[indexPath.row].name
-        cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
-        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
-        cell.detailTextLabel?.textColor = .gray
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
+        let item = "\(habit[indexPath.row].name)"
+        cell.textLabel?.text = item
+        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.textColor = .gray
+        if item == "Категория" {
+            cell.detailTextLabel?.text = selectedCategory?.title
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        }
+        if item == "Расписание" {
+            cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        }
+        
         return cell
     }
     
@@ -439,5 +459,13 @@ extension NewHabitVC: UITextFieldDelegate{
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension NewHabitVC: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+        checkIfCorrect()
     }
 }

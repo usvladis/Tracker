@@ -14,27 +14,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let trackerNavBarViewController = TrackerNavBarController()
-        trackerNavBarViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
-            image: UIImage(systemName: "circle.circle.fill"),
-            selectedImage: nil
-        )
         
-        let statsViewController = StatsViewController()
-        statsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
-            image: UIImage(systemName: "hare.fill"),
-            selectedImage: nil
-        )
-        
-        // Создаем TabBarController и добавляем контроллеры
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [trackerNavBarViewController, statsViewController]
-                
-        // Устанавливаем TabBarController как корневой ViewController
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = tabBarController
+        // Проверяем, был ли уже показан онбординг
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+        
+        if !hasSeenOnboarding {
+            // Если онбординг не был показан, открываем его
+            let onboardingVC = OnboardingViewController()
+            window?.rootViewController = onboardingVC
+        } else {
+            // Если онбординг был показан, открываем главный экран
+            let mainVC = TabBarViewController() // Ваш главный экран
+            window?.rootViewController = mainVC
+        }
         window?.makeKeyAndVisible()
     }
 

@@ -33,6 +33,7 @@ class ScheduleViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: "switchCell")
+        tableView.backgroundColor = .lightGray
         tableView.layer.cornerRadius = 10
         tableView.separatorStyle = .singleLine
         tableView.isScrollEnabled = false
@@ -196,6 +197,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     func configureCell(with weekDay: DayOfWeek, isLastCell: Bool, isSelected: Bool) {
         self.weekDay = weekDay
+        backgroundColor = UIColor(named: "ypBackground")
         cellTitleLabel.text = weekDay.rawValue
         separatorView.isHidden = isLastCell
         switchButton.isOn = isSelected

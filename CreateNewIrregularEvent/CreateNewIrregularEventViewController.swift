@@ -12,6 +12,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     weak var delegate: NewHabitViewControllerDelegate?
     var trackerVC = TrackerViewController()
     
+    private var selectedCategory: TrackerCategory?
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor = .clear
     
@@ -256,14 +257,21 @@ class CreateNewIrregularEventViewController: UIViewController {
     @objc private func createButtonTapped() {
         print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
-        let newTracker = Tracker(id: UUID(), title: trackerTitle, color: selectedColor, emoji: selectedEmoji, schedule: DayOfWeek.allCases)
-        trackerVC.createNewTracker(tracker: newTracker)
-        delegate?.didCreateNewHabit(newTracker)
+        let newTracker = Tracker(id: UUID(), 
+                                 title: trackerTitle, 
+                                 color: selectedColor,
+                                 emoji: selectedEmoji,
+                                 schedule: DayOfWeek.allCases)
+        //trackerVC.createNewTracker(tracker: newTracker)
+        delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }
     
     private func navigateToCategory() {
-        // Ваша логика перехода к экрану "Категория"
+        let categoriesViewController = CategoriesViewController()
+        categoriesViewController.delegate = self
+        categoriesViewController.modalPresentationStyle = .popover
+        present(categoriesViewController, animated: true, completion: nil)
     }
     
     @objc private func textFieldChanged(_ textField: UITextField) {
@@ -281,7 +289,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     }
     
     private func checkIfCorrect() {
-        if let text = nameTextField.text, !text.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear {
+        if let text = nameTextField.text, !text.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear && selectedCategory != nil {
             createButton.isEnabled = true
             createButton.backgroundColor = .black
         } else {
@@ -302,14 +310,20 @@ extension CreateNewIrregularEventViewController: UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
+            cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+            cell.textLabel?.textColor = .black
+            
+            // Устанавливаем текст категории в detailTextLabel
+            cell.detailTextLabel?.text = selectedCategory?.title
+            cell.detailTextLabel?.textColor = .gray
+            cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+            
+            cell.backgroundColor = .clear
+            cell.accessoryType = .disclosureIndicator
         }
-        cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
-        cell.backgroundColor = .clear
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
@@ -412,3 +426,10 @@ extension CreateNewIrregularEventViewController: UITextFieldDelegate{
     }
 }
 
+extension CreateNewIrregularEventViewController: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory) {
+        selectedCategory = category
+        tableView.reloadData()
+        checkIfCorrect()
+    }
+}
