@@ -15,6 +15,7 @@ final class TrackerViewController: UIViewController{
     private var searchBar = UISearchBar()
     private var datePicker = UIDatePicker()
     private var collectionView: UICollectionView!
+    private var filterButton = UIButton()
     
     private var viewModel: TrackerViewModel!
     
@@ -83,6 +84,12 @@ final class TrackerViewController: UIViewController{
         newVC.modalPresentationStyle = .popover
         present(newVC, animated: true, completion: nil)
     }
+    
+    @objc private func filterButtonTapped() {
+        let filterCategoryVC = FilterCategoryViewController()
+        filterCategoryVC.modalPresentationStyle = .popover
+        present(filterCategoryVC, animated: true, completion: nil)
+    }
     //MARK: - SetUpUIView
     private func setUpView() {
         view.backgroundColor = .white
@@ -91,6 +98,7 @@ final class TrackerViewController: UIViewController{
         setUpLabels()
         setUpSearchBar()
         setUpCollectionView()
+        setUpFilterButton()
     }
     
     private func setUpNavigationBar() {
@@ -198,6 +206,26 @@ final class TrackerViewController: UIViewController{
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
+    }
+    
+    private func setUpFilterButton() {
+        filterButton.backgroundColor = .systemBlue
+        filterButton.setTitle("Фильтры", for: .normal)
+        filterButton.titleLabel?.textColor = .white
+        filterButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        filterButton.layer.cornerRadius = 16
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterButton)
+        
+        filterButton.addTarget(self, action: #selector (filterButtonTapped), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 130),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -130),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }

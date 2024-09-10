@@ -18,6 +18,8 @@
 		2139835A2C8B4D53000429EB /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213983592C8B4D53000429EB /* CategoriesViewController.swift */; };
 		2139835C2C8B99D8000429EB /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2139835B2C8B99D8000429EB /* NewCategoryViewController.swift */; };
 		2139835E2C8C7FA6000429EB /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2139835D2C8C7FA6000429EB /* CategoryViewModel.swift */; };
+		215818DD2C90A53B00DA42B3 /* StatsNavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215818DC2C90A53B00DA42B3 /* StatsNavBarController.swift */; };
+		215818DF2C90C60A00DA42B3 /* FilterCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215818DE2C90C60A00DA42B3 /* FilterCategoryViewController.swift */; };
 		218881212C2DCEEE0032D98E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881202C2DCEEE0032D98E /* AppDelegate.swift */; };
 		218881232C2DCEEE0032D98E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881222C2DCEEE0032D98E /* SceneDelegate.swift */; };
 		218881252C2DCEEE0032D98E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881242C2DCEEE0032D98E /* ViewController.swift */; };
@@ -76,6 +78,8 @@
 		213983592C8B4D53000429EB /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		2139835B2C8B99D8000429EB /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		2139835D2C8C7FA6000429EB /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		215818DC2C90A53B00DA42B3 /* StatsNavBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsNavBarController.swift; sourceTree = "<group>"; };
+		215818DE2C90C60A00DA42B3 /* FilterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewController.swift; sourceTree = "<group>"; };
 		2188811D2C2DCEEE0032D98E /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		218881202C2DCEEE0032D98E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		218881222C2DCEEE0032D98E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				213983592C8B4D53000429EB /* CategoriesViewController.swift */,
 				2139835B2C8B99D8000429EB /* NewCategoryViewController.swift */,
 				2139835D2C8C7FA6000429EB /* CategoryViewModel.swift */,
+				215818DE2C90C60A00DA42B3 /* FilterCategoryViewController.swift */,
 			);
 			path = CategoriesViewController;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				2188815B2C2DEC580032D98E /* StatsViewController.swift */,
+				215818DC2C90A53B00DA42B3 /* StatsNavBarController.swift */,
 			);
 			path = StatsViewController;
 			sourceTree = "<group>";
@@ -445,6 +451,7 @@
 				219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */,
 				210E27282C34A63700189D83 /* ScheduleViewController.swift in Sources */,
 				219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */,
+				215818DD2C90A53B00DA42B3 /* StatsNavBarController.swift in Sources */,
 				21EDABA42C3042A700C2CD21 /* TrackerCategory.swift in Sources */,
 				218DC6592C760A0400603787 /* TabBarViewController.swift in Sources */,
 				218DC6542C74B49300603787 /* RedPadeViewController.swift in Sources */,
@@ -464,6 +471,7 @@
 				21FA630E2C31874600099541 /* TrackerCollectionViewCell.swift in Sources */,
 				218DC62D2C6F997300603787 /* CoreDataModel.xcdatamodeld in Sources */,
 				218DC65D2C77421400603787 /* TrackerViewModel.swift in Sources */,
+				215818DF2C90C60A00DA42B3 /* FilterCategoryViewController.swift in Sources */,
 				21EDABA62C3042B000C2CD21 /* TrackerRecord.swift in Sources */,
 				21EDABA22C30428B00C2CD21 /* Tracker.swift in Sources */,
 				218881592C2DEC460032D98E /* TrackerViewController.swift in Sources */,
