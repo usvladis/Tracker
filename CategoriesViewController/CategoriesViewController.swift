@@ -251,12 +251,14 @@ extension CategoriesViewController: UIContextMenuInteractionDelegate {
     private func editCategory(_ category: TrackerCategory) {
         // Переход на экран редактирования категории
         let editVC = EditCategoryViewController()
+        editVC.category = category  // Передаем категорию в контроллер редактирования
+        editVC.delegate = self // Устанавливаем делегат для обновления
         editVC.modalPresentationStyle = .popover
         present(editVC, animated: true)
     }
     
     private func deleteCategory(at indexPath: IndexPath) {
-        let category = viewModel.category(at: indexPath.row)
+        _ = viewModel.category(at: indexPath.row)
         
         // Создаем Alert Controller
         let alertController = UIAlertController(title: "Эта категория точно не нужна?",
@@ -278,6 +280,12 @@ extension CategoriesViewController: UIContextMenuInteractionDelegate {
         
         // Показываем Alert Controller
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension CategoriesViewController: EditCategoryViewControllerDelegate {
+    func editCategoryScreen(_ screen: EditCategoryViewController, didEditCategory category: TrackerCategory, with newTitle: String) {
+        viewModel.updateCategory(category, with: newTitle)
     }
 }
 

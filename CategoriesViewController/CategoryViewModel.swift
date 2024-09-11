@@ -39,6 +39,15 @@ final class CategoryViewModel {
         categories.remove(at: index)
         onCategoriesChanged?(categories)
     }
+    
+    func updateCategory(_ category: TrackerCategory, with newTitle: String) {
+        trackerCategoryStore.updateCategory(category, with: newTitle)
+        if let index = categories.firstIndex(where: { $0.title == category.title }) {
+            categories[index].title = newTitle
+            NotificationCenter.default.post(name: NSNotification.Name("CategoryDeleted"), object: category)
+            onCategoriesChanged?(categories)
+        }
+    }
 
     func addCategory(title: String) {
         let newCategory = TrackerCategory(title: title, trackers: [])

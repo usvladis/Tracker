@@ -98,7 +98,7 @@ final class TrackerViewController: UIViewController{
     
     @objc private func handleCategoryDeleted(_ notification: Notification) {
         if let deletedCategory = notification.object as? TrackerCategory {
-            viewModel.deleteCategory(deletedCategory)
+            viewModel.deleteOrChangeCategory(deletedCategory)
         }
     }
     //MARK: - SetUpUIView

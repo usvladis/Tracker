@@ -111,6 +111,21 @@ extension TrackerCategoryStore {
         }
     }
     
+    func updateCategory(_ category: TrackerCategory, with newTitle: String) {
+        // Найдем категорию в Core Data по старому названию
+        guard let categoryToUpdate = fetchCategory(with: category.title) else { return }
+        
+        // Обновим название категории
+        categoryToUpdate.title = newTitle
+        
+        // Сохраним изменения в контексте
+        do {
+            try context.save()
+        } catch {
+            print("Failed to update category: \(error)")
+        }
+    }
+    
 }
 
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {

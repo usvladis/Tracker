@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol EditCategoryViewControllerDelegate: AnyObject {
+    func editCategoryScreen(_ screen: EditCategoryViewController, didEditCategory category: TrackerCategory, with newTitle: String)
+}
+
 final class EditCategoryViewController: UIViewController {
+    
+    weak var delegate: EditCategoryViewControllerDelegate?
+    var category: TrackerCategory?
         
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +41,7 @@ final class EditCategoryViewController: UIViewController {
         return textField
     }()
     
-    private let addButton: UIButton = {
+    private let saveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.layer.cornerRadius = 16
@@ -49,6 +56,10 @@ final class EditCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        
+        if let category = category {
+            textField.text = category.title
+        }
     }
     
     private func setUpUI() {
@@ -74,23 +85,26 @@ final class EditCategoryViewController: UIViewController {
     }
     
     private func setUpButton() {
-        view.addSubview(addButton)
-        addButton.addTarget(self, action: #selector(addNewCategory), for: .touchUpInside)
+        view.addSubview(saveButton)
+        saveButton.addTarget(self, action: #selector(saveCategory), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            addButton.heightAnchor.constraint(equalToConstant: 60),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            saveButton.heightAnchor.constraint(equalToConstant: 60),
+            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
-    @objc private func addNewCategory() {
-        guard let categoryTitle = textField.text, !categoryTitle.isEmpty else {
-            // Показываем ошибку или сообщение пользователю
+    @objc private func saveCategory() {
+        guard let newTitle = textField.text, !newTitle.isEmpty, let category = category else {
+            // Показываем ошибку или сообщение пользователю, если данные невалидные
+            print("Error: категория или название отсутствуют")
             return
         }
-        //Перезаписываем название категории
+        
+        // Передаем обновленное название через делегат
+        delegate?.editCategoryScreen(self, didEditCategory: category, with: newTitle)
         dismiss(animated: true)
     }
 }

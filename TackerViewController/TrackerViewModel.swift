@@ -70,7 +70,7 @@ class TrackerViewModel {
         filterTrackersForCurrentDay()
     }
     
-    func deleteCategory(_ category: TrackerCategory) {
+    func deleteOrChangeCategory(_ category: TrackerCategory) {
         loadTrackersFromCoreData() // Обновляем категории после удаления
     }
     
