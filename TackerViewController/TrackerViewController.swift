@@ -9,6 +9,10 @@ import UIKit
 
 final class TrackerViewController: UIViewController{
     
+    private let trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerRecordStore = TrackerRecordStore()
+    
     private var trackerLabel = UILabel()
     private var descriptionLabel = UILabel()
     private var imageMock = UIImageView()
@@ -256,6 +260,10 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell else {
             fatalError("Unable to dequeue TrackerCollectionViewCell")
         }
+        
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.addInteraction(interaction)
+        
         let tracker = viewModel.visibleTrackers[indexPath.section].trackers[indexPath.item]
         let completedDays = viewModel.completedTrackers.filter { $0.trackerId == tracker.id }.count
         let isCompleted = viewModel.completedTrackers.contains { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: viewModel.selectedDate) }
@@ -291,5 +299,69 @@ extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDel
 extension TrackerViewController: CreateTrackerDelegate {
     func didCreateNewTracker(_ tracker: Tracker, _ category: String) {
         viewModel.createNewTracker(tracker, category )
+    }
+}
+
+extension TrackerViewController: EditTrackerDelegate {
+    func didEditTracker(_ tracker: Tracker, _ category: String) {
+        
+    }
+}
+
+extension TrackerViewController: UIContextMenuInteractionDelegate {
+    
+    // Создаем меню при долгом нажатии на ячейку
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        
+        // Определяем индекс ячейки, которая была долгим нажатием
+        guard let cell = interaction.view as? TrackerCollectionViewCell,
+              let indexPath = collectionView.indexPath(for: cell) else { return nil }
+        let category = viewModel.visibleTrackers[indexPath.section]
+        let tracker = viewModel.visibleTrackers[indexPath.section].trackers[indexPath.item]
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            
+            let pinAction = UIAction(title: "Закрепить") { _ in
+                // Переход на экран редактирования
+                self.pinTracker(tracker)
+            }
+            
+            let editAction = UIAction(title: "Редактировать") { _ in
+                // Переход на экран редактирования
+                self.editTracker(tracker, category)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+                // Удаление категории
+                self.deleteTracker(tracker)
+            }
+            
+            // Возвращаем контекстное меню с опциями
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+        }
+    }
+    
+    private func pinTracker(_ tracker: Tracker) {
+        
+    }
+    
+    private func editTracker(_ tracker: Tracker, _ category: TrackerCategory) {
+        let editTrackerViewController = EditTrackerViewController()
+        editTrackerViewController.delegate = self
+        editTrackerViewController.tracker = tracker
+        editTrackerViewController.category = category
+        editTrackerViewController.modalPresentationStyle = .popover
+        present(editTrackerViewController, animated: true)
+    }
+    
+    private func deleteTracker(_ tracker: Tracker) {
+        let actionSheet = UIAlertController(title: "Уверены что хотите удалить трекер?", message: nil, preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+            self.viewModel.deleteTracker(tracker: tracker)
+        }
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(cancelAction)
+        self.present(actionSheet, animated: true, completion: nil)
     }
 }

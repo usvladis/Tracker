@@ -9,6 +9,9 @@ import UIKit
 
 final class CategoryViewModel {
     private let trackerCategoryStore: TrackerCategoryStore
+    private let trackerStore = TrackerStore()
+    private let trackerRecordStore = TrackerRecordStore()
+    
     private var categories: [TrackerCategory] = [] {
         didSet {
             onCategoriesChanged?(categories)
@@ -33,6 +36,11 @@ final class CategoryViewModel {
     func deleteCategory(at index: Int) {
         // Удаляем категорию из Core Data
         let category = categories[index]
+        let trackers = category.trackers
+        for tracker in trackers {
+            trackerStore.deleteTracker(tracker: tracker)
+            trackerRecordStore.deleteAllRecordFor(tracker: tracker)
+        }
         trackerCategoryStore.deleteCategory(category)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryDeleted"), object: category)
         // Обновляем локальный массив категорий и UI

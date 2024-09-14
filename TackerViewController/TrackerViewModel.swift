@@ -154,13 +154,7 @@ class TrackerViewModel {
     func createNewTracker(_ tracker: Tracker, _ category: String) {
         print("didCreateNewHabit asked")
         createNewTracker(tracker: tracker)
-
-        if let _ = trackerStore.addNewTracker(from: tracker) {
-          trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: category)
-        } else {
-          print("Failed to save tracker")
-        }
-        
+        trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: category)
         loadTrackersFromCoreData() 
     }
     
@@ -173,5 +167,15 @@ class TrackerViewModel {
         trackers.append(tracker)
         categories = [TrackerCategory(title: list.title, trackers: trackers)]
         filterTrackersForCurrentDay()
+    }
+    
+    func deleteTracker(tracker: Tracker) {
+        print("didDeleteTracker called")
+        // Удаление трекера из Core Data
+        trackerStore.deleteTracker(tracker: tracker)
+        trackerRecordStore.deleteAllRecordFor(tracker: tracker)
+        print("Tracker successfully deleted")
+        // Обновляем локальные данные
+        loadTrackersFromCoreData()
     }
 }

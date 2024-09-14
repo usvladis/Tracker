@@ -34,6 +34,46 @@ final class TrackerStore {
         
         return newTracker
     }
+/*
+    func deleteTracker(_ tracker: Tracker) -> Bool {
+        let fetchRequest = NSFetchRequest<TrackerCD>(entityName: "TrackerCD")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+        
+        do {
+            let trackerCoreDataArray = try context.fetch(fetchRequest)
+            
+            if let trackerCoreData = trackerCoreDataArray.first {
+                // Удаляем трекер
+                context.delete(trackerCoreData)
+                
+                // Сохраняем изменения
+                try context.save()
+                print("Tracker deleted successfully")
+                return true
+            } else {
+                print("Tracker not found")
+                return false
+            }
+        } catch {
+            print("Failed to delete tracker: \(error)")
+            return false
+        }
+    }
+*/
+    func fetchTracker2() -> [TrackerCD] {
+      guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+      let managedContext = appDelegate.persistentContainer.viewContext
+      let fetchRequest = NSFetchRequest<TrackerCD>(entityName: "TrackerCD")
+      let trackerCoreDataArray = try! managedContext.fetch(fetchRequest)
+      return trackerCoreDataArray
+    }
+    
+    func deleteTracker(tracker: Tracker) {
+      let targetTrackers = fetchTracker2()
+      if let index = targetTrackers.firstIndex(where: {$0.id == tracker.id}) {
+        context.delete(targetTrackers[index])
+      }
+    }
     
     func fetchTracker() -> [Tracker] {
         let fetchRequest = NSFetchRequest<TrackerCD>(entityName: "TrackerCD")

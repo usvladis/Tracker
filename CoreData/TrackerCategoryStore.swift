@@ -76,18 +76,18 @@ extension TrackerCategoryStore {
             return nil
         }
     }
-    
-  func createCategoryAndAddTracker(_ tracker: Tracker, with titleCategory: String) {
-      let category = fetchCategory(with: titleCategory) ?? createCategory(with: titleCategory)
-      guard let trackerCoreData = trackerStore.addNewTracker(from: tracker) else { return }
-      category.addToTrackers(trackerCoreData)
-      do {
-          try context.save()
-      } catch {
-          print("Failed to save context: \(error)")
-      }
-  }
-
+    /*
+    func createCategoryAndAddTracker(_ tracker: Tracker, with titleCategory: String) {
+        let category = fetchCategory(with: titleCategory) ?? createCategory(with: titleCategory)
+        guard let trackerCoreData = trackerStore.addNewTracker(from: tracker) else { return }
+        category.addToTrackers(trackerCoreData)
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save context: \(error)")
+        }
+    }
+*/
   private func createCategory(with title: String) -> TrackerCategoryCD {
       let entity = NSEntityDescription.entity(forEntityName: "TrackerCategoryCD", in: context)!
       let newCategory = TrackerCategoryCD(entity: entity, insertInto: context)
