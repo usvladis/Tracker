@@ -267,7 +267,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
                                  title: trackerTitle,
                                  color: selectedColor,
                                  emoji: selectedEmoji,
-                                 schedule: selectedDays)
+                                 schedule: selectedDays,
+                                 trackerCategory: selectedCategory?.title ?? "")
         delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }

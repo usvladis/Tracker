@@ -261,7 +261,8 @@ class CreateNewIrregularEventViewController: UIViewController {
                                  title: trackerTitle, 
                                  color: selectedColor,
                                  emoji: selectedEmoji,
-                                 schedule: DayOfWeek.allCases)
+                                 schedule: DayOfWeek.allCases,
+                                 trackerCategory: selectedCategory?.title ?? "")
         //trackerVC.createNewTracker(tracker: newTracker)
         delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)

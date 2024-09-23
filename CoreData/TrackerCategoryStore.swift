@@ -126,6 +126,41 @@ extension TrackerCategoryStore {
         }
     }
     
+    func deleteTrackerFromCategory(tracker: Tracker, with titleCategory: String) {
+        guard let existingCategory = fetchCategory(with: titleCategory) else { return }
+        var existingTrackers = existingCategory.trackers?.allObjects as? [TrackerCD] ?? []
+        if let index = existingTrackers.firstIndex(where: { $0.id == tracker.id }) {
+            existingTrackers.remove(at: index)
+        }
+        existingCategory.trackers = NSSet(array: existingTrackers)
+        do {
+            try context.save()
+        } catch {
+            print("Ошибка удаления трекера из категории: \(error)")
+        }
+    }
+    
+    func addTrackerToCategory(tracker: Tracker, with titleCategory: String) {
+        let trackers = trackerStore.fetchTracker2()
+        if let existingCategory = fetchCategory(with: titleCategory) {
+            var existingTrackers = existingCategory.trackers?.allObjects as? [TrackerCD] ?? []
+            if let trackerCoreData = trackers.first(where: { $0.id == tracker.id }) {
+                if !existingTrackers.contains(where: { $0.id == tracker.id }) {
+                    existingTrackers.append(trackerCoreData)
+                }
+            }
+            existingCategory.trackers = NSSet(array: existingTrackers)
+        } else {
+            let category = TrackerCategory(title: titleCategory, trackers: [tracker])
+            createCategory(category)
+        }
+        do {
+            try context.save()
+        } catch {
+            print("Ошибка сохранения трекера в категории: \(error)")
+        }
+    }
+    
 }
 
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {

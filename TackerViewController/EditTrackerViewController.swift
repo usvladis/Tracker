@@ -9,7 +9,7 @@ import UIKit
 //TODO: Исправить отображение цвета трекера при ипопадании пользователя на страницу редактирования трекера
 
 protocol EditTrackerDelegate: AnyObject{
-    func didEditTracker(_ tracker: Tracker, _ category: String)
+    func didEditTracker(_ tracker: Tracker, _ category: String, _ newCategory: String)
 }
 
 class EditTrackerViewController: UIViewController {
@@ -19,6 +19,7 @@ class EditTrackerViewController: UIViewController {
     weak var delegate: EditTrackerDelegate?
     var tracker: Tracker?
     var category: TrackerCategory?
+    var newCategory: TrackerCategory?
     
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
@@ -283,19 +284,24 @@ class EditTrackerViewController: UIViewController {
     @objc private func saveButtonTapped() {
         print("Create button tapped")
         guard let trackerTitle = nameTextField.text else {return}
+        if newCategory == nil {
+            newCategory = category
+        }
         let editedTracker = Tracker(id: tracker?.id ?? UUID(),
-                                 title: trackerTitle,
-                                 color: selectedColor ?? .clear,
-                                 emoji: selectedEmoji ?? "",
-                                 schedule: selectedSchedule ?? DayOfWeek.allCases)
-
-        delegate?.didEditTracker(editedTracker, category?.title ?? "")
+                                    title: trackerTitle,
+                                    color: selectedColor ?? .clear,
+                                    emoji: selectedEmoji ?? "",
+                                    schedule: selectedSchedule ?? DayOfWeek.allCases,
+                                    trackerCategory: newCategory?.title ?? ""
+        )
+        
+        delegate?.didEditTracker(editedTracker, category?.title ?? "", newCategory?.title ?? "")
         dismiss(animated: true)
     }
     
     private func navigateToCategory() {
         let categoriesViewController = CategoriesViewController()
-        //categoriesViewController.delegate = self
+        categoriesViewController.delegate = self
         categoriesViewController.modalPresentationStyle = .popover
         present(categoriesViewController, animated: true, completion: nil)
     }
@@ -303,7 +309,7 @@ class EditTrackerViewController: UIViewController {
     private func navigateToSchedule() {
         let scheduleViewController = ScheduleViewController()
         // Устанавливаем текущий контроллер как делегата
-        //scheduleViewController.delegate = self
+        scheduleViewController.delegate = self
         print("Delegate set: \(scheduleViewController.delegate != nil)")
         scheduleViewController.modalPresentationStyle = .popover
         present(scheduleViewController, animated: true, completion: nil)
@@ -467,15 +473,21 @@ extension EditTrackerViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
+            // Обновляем выбранное эмодзи
+            selectedEmoji = emojiData[indexPath.item]
+            
             if let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell {
                 cell.setSelectedBackground(isSelected: true)
             }
         } else if collectionView == colorCollectionView {
+            // Обновляем выбранный цвет
+            selectedColor = colorData[indexPath.item]
+            
             if let cell = collectionView.cellForItem(at: indexPath) as? ColorCell {
                 cell.setSelectedBorder(isSelected: true, color: colorData[indexPath.item])
             }
         }
-        checkIfCorrect()
+        checkIfCorrect() // проверяем корректность введенных данных
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -500,5 +512,27 @@ extension EditTrackerViewController: UITextFieldDelegate{
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension EditTrackerViewController: ScheduleViewControllerDelegate {
+    func didSelectDays(_ days: [DayOfWeek]) {
+        selectedSchedule = days
+        print("didSelectDays called with days: \(days)")
+        let schedule = days.isEmpty ? "" : days.map { $0.shortDayName }.joined(separator: ", ")
+        habit[1].pickedSettings = schedule
+        print("Updated pickedSettings: \(habit[1].pickedSettings)")
+        tableView.reloadData()
+        dismiss(animated: true) {
+            print("NewHabitViewController dismissed")
+        }
+    }
+}
+
+extension EditTrackerViewController: CategoryViewControllerDelegate {
+    func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory) {
+        newCategory = category
+        tableView.reloadData()
+        checkIfCorrect()
     }
 }

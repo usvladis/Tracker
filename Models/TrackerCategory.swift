@@ -9,5 +9,5 @@ import UIKit
 
 struct TrackerCategory {
     var title: String
-    let trackers: [Tracker]
+    var trackers: [Tracker]
 }

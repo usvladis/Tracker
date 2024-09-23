@@ -62,7 +62,7 @@ class TrackerViewModel {
             print("Decoded Categories: \(categories)")
         } else {
             if !storedTrackers.isEmpty {
-                let newCategory = TrackerCategory(title: "Default Category", trackers: storedTrackers)
+                let newCategory = TrackerCategory(title: "Трекеры без категорий", trackers: storedTrackers)
                 categories.append(newCategory)
             }
         }
@@ -177,5 +177,49 @@ class TrackerViewModel {
         print("Tracker successfully deleted")
         // Обновляем локальные данные
         loadTrackersFromCoreData()
+    }
+    
+    func updateTracker(_ tracker: Tracker, _ category: String, _ newCategory: String) {
+        // Найдем индекс старой категории, к которой принадлежит трекер
+        guard let indexOfOldCategory = categories.firstIndex(where: { $0.title == category }),
+              let indexOfTrackerInOldCategory = categories[indexOfOldCategory].trackers.firstIndex(where: { $0.id == tracker.id })
+        else {
+            print("Old category or tracker not found")
+            return
+        }
+        
+        // Удаляем трекер из старой категории, но не меняем название категории
+        categories[indexOfOldCategory].trackers.remove(at: indexOfTrackerInOldCategory)
+        
+        // Если категория изменилась
+        if category != newCategory {
+            // Добавляем трекер в новую категорию
+            if let indexOfNewCategory = categories.firstIndex(where: { $0.title == newCategory }) {
+                // Если новая категория уже существует
+                categories[indexOfNewCategory].trackers.append(tracker)
+            } else {
+                // Если новая категория не существует, создаем новую категорию с трекером
+                let newCategoryToAdd = TrackerCategory(title: newCategory, trackers: [tracker])
+                categories.append(newCategoryToAdd)
+            }
+            
+            // Обновляем трекер в Core Data
+            trackerStore.updateTracker(tracker: tracker)
+            trackerCategoryStore.deleteTrackerFromCategory(tracker: tracker, with: category)
+            trackerCategoryStore.addTrackerToCategory(tracker: tracker, with: newCategory)
+            
+            print("Tracker moved to a new category")
+        } else {
+            // Если категория не изменилась, добавляем трекер обратно в старую категорию
+            categories[indexOfOldCategory].trackers.append(tracker)
+            
+            // Обновляем трекер в Core Data
+            trackerStore.updateTracker(tracker: tracker)
+            
+            print("Tracker updated in the same category")
+        }
+        
+        // Перезагружаем видимые категории и трекеры
+        filterTrackersForCurrentDay()
     }
 }

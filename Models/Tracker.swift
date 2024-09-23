@@ -13,6 +13,7 @@ struct Tracker {
     let color: UIColor
     let emoji: String
     let schedule: [DayOfWeek]
+    let trackerCategory: String
 }
 
 enum DayOfWeek: String, CaseIterable, Codable {

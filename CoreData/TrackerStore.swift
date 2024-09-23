@@ -75,6 +75,23 @@ final class TrackerStore {
       }
     }
     
+    func updateTracker(tracker: Tracker) {
+        let targetTrackers = fetchTracker2()
+        if let index = targetTrackers.firstIndex(where: {$0.id == tracker.id}) {
+            targetTrackers[index].title = tracker.title
+            targetTrackers[index].color = UIColorMarshalling.hexString(from: tracker.color)
+            targetTrackers[index].emoji = tracker.emoji
+            targetTrackers[index].schedule = tracker.schedule as NSArray?
+            targetTrackers[index].category?.title = tracker.trackerCategory
+            
+            do {
+                try context.save()
+            } catch {
+                print("Failed to update tracker: \(error)")
+            }
+        }
+    }
+    
     func fetchTracker() -> [Tracker] {
         let fetchRequest = NSFetchRequest<TrackerCD>(entityName: "TrackerCD")
         do {
@@ -85,7 +102,8 @@ final class TrackerStore {
                     title: trackerCoreData.title ?? "",
                     color: UIColorMarshalling.color(from: trackerCoreData.color ?? ""),
                     emoji: trackerCoreData.emoji ?? "",
-                    schedule: trackerCoreData.schedule as? [DayOfWeek] ?? []
+                    schedule: trackerCoreData.schedule as? [DayOfWeek] ?? [], 
+                    trackerCategory: trackerCoreData.category?.title ?? ""
                 )
             }
             return trackers
@@ -98,7 +116,7 @@ final class TrackerStore {
     func decodingTrackers(from trackersCoreData: TrackerCD) -> Tracker? {
         guard let id = trackersCoreData.id, let title = trackersCoreData.title,
               let color = trackersCoreData.color, let emoji = trackersCoreData.emoji else { return nil }
-        return Tracker(id: id, title: title, color: UIColorMarshalling.color(from: color), emoji: emoji, schedule: trackersCoreData.schedule as? [DayOfWeek] ?? [])
+        return Tracker(id: id, title: title, color: UIColorMarshalling.color(from: color), emoji: emoji, schedule: trackersCoreData.schedule as? [DayOfWeek] ?? [], trackerCategory: trackersCoreData.category?.title ?? "")
     }
 }
 

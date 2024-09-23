@@ -303,8 +303,8 @@ extension TrackerViewController: CreateTrackerDelegate {
 }
 
 extension TrackerViewController: EditTrackerDelegate {
-    func didEditTracker(_ tracker: Tracker, _ category: String) {
-        
+    func didEditTracker(_ tracker: Tracker, _ category: String, _ newCategory: String) {
+        viewModel.updateTracker(tracker, category, newCategory)
     }
 }
 
