@@ -318,10 +318,11 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
               let indexPath = collectionView.indexPath(for: cell) else { return nil }
         let category = viewModel.visibleTrackers[indexPath.section]
         let tracker = viewModel.visibleTrackers[indexPath.section].trackers[indexPath.item]
+        let pinTitle = tracker.isPinned ? "Открепить" : "Закрепить"
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
-            let pinAction = UIAction(title: "Закрепить") { _ in
+            let pinAction = UIAction(title: pinTitle) { _ in
                 // Переход на экран редактирования
                 self.pinTracker(tracker)
             }
@@ -342,7 +343,15 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
     }
     
     private func pinTracker(_ tracker: Tracker) {
+        var updatedTracker = tracker // Создаем изменяемую копию
         
+        if tracker.isPinned {
+            viewModel.unpinTracker(updatedTracker)
+            updatedTracker.isPinned = false // Обновляем свойство копии
+        } else {
+            viewModel.pinTracker(updatedTracker)
+            updatedTracker.isPinned = true // Обновляем свойство копии
+        }
     }
     
     private func editTracker(_ tracker: Tracker, _ category: TrackerCategory) {

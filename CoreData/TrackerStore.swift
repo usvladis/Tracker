@@ -30,6 +30,7 @@ final class TrackerStore {
         newTracker.color = UIColorMarshalling.hexString(from: tracker.color)
         newTracker.emoji = tracker.emoji
         newTracker.schedule = tracker.schedule as NSArray?
+        newTracker.isPinned = tracker.isPinned
         print(newTracker)
         
         return newTracker
@@ -83,6 +84,7 @@ final class TrackerStore {
             targetTrackers[index].emoji = tracker.emoji
             targetTrackers[index].schedule = tracker.schedule as NSArray?
             targetTrackers[index].category?.title = tracker.trackerCategory
+            targetTrackers[index].isPinned = tracker.isPinned
             
             do {
                 try context.save()
@@ -103,7 +105,8 @@ final class TrackerStore {
                     color: UIColorMarshalling.color(from: trackerCoreData.color ?? ""),
                     emoji: trackerCoreData.emoji ?? "",
                     schedule: trackerCoreData.schedule as? [DayOfWeek] ?? [], 
-                    trackerCategory: trackerCoreData.category?.title ?? ""
+                    trackerCategory: trackerCoreData.category?.title ?? "",
+                    isPinned: trackerCoreData.isPinned
                 )
             }
             return trackers
@@ -116,7 +119,23 @@ final class TrackerStore {
     func decodingTrackers(from trackersCoreData: TrackerCD) -> Tracker? {
         guard let id = trackersCoreData.id, let title = trackersCoreData.title,
               let color = trackersCoreData.color, let emoji = trackersCoreData.emoji else { return nil }
-        return Tracker(id: id, title: title, color: UIColorMarshalling.color(from: color), emoji: emoji, schedule: trackersCoreData.schedule as? [DayOfWeek] ?? [], trackerCategory: trackersCoreData.category?.title ?? "")
+        return Tracker(id: id, title: title, color: UIColorMarshalling.color(from: color), emoji: emoji, schedule: trackersCoreData.schedule as? [DayOfWeek] ?? [], trackerCategory: trackersCoreData.category?.title ?? "", isPinned: trackersCoreData.isPinned)
+    }
+    
+    func pinOrUnpinTracker(tracker: Tracker, isPinned: Bool) {
+        let targetTrackers = fetchTracker2()
+        
+        if let trackerToUpdate = targetTrackers.first(where: { $0.id == tracker.id }) {
+            trackerToUpdate.isPinned = isPinned // Меняем только флаг isPinned
+            
+            do {
+                try context.save() // Сохраняем изменения в контексте Core Data
+                print("Tracker pin status updated successfully")
+                print(trackerToUpdate.isPinned)
+            } catch {
+                print("Failed to update tracker pin status: \(error)")
+            }
+        }
     }
 }
 

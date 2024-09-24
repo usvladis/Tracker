@@ -37,6 +37,8 @@ class TrackerViewModel {
         }
     }
     
+    var pinnedTrackers: [Tracker] = []
+    
     var onCategoriesChanged: (([TrackerCategory]) -> Void)?
     var onVisibleTrackersChanged: (([TrackerCategory]) -> Void)?
     var onCompletedTrackersChanged: (([TrackerRecord]) -> Void)?
@@ -49,23 +51,33 @@ class TrackerViewModel {
     
     private func loadTrackersFromCoreData() {
         let storedTrackers = trackerStore.fetchTracker()
-        print("Loaded Trackers: \(storedTrackers)")
         let storedCategories = trackerCategoryStore.fetchAllCategories()
-        print("Loaded Categories: \(storedCategories.map { $0.title })")
         let storedRecords = trackerRecordStore.fetchAllRecords()
-        
+
         completedTrackers = storedRecords.map { TrackerRecord(trackerId: $0.trackerId, date: $0.date) }
-        print("Loaded Completed Trackers: \(completedTrackers)")
-        
-        if !storedCategories.isEmpty {
-            categories = storedCategories.compactMap { trackerCategoryStore.decodingCategory(from: $0) }
-            print("Decoded Categories: \(categories)")
-        } else {
-            if !storedTrackers.isEmpty {
-                let newCategory = TrackerCategory(title: "Трекеры без категорий", trackers: storedTrackers)
-                categories.append(newCategory)
+
+        // Очищаем массив закрепленных трекеров перед его обновлением
+        pinnedTrackers.removeAll()
+
+        // Загружаем трекеры и создаем новую категорию для закрепленных
+        var allTrackers = [Tracker]()
+        for tracker in storedTrackers {
+            if tracker.isPinned {
+                // Проверяем, есть ли уже трекер в массиве pinnedTrackers, чтобы избежать дублирования
+                if !pinnedTrackers.contains(where: { $0.id == tracker.id }) {
+                    pinnedTrackers.append(tracker)
+                }
+            } else {
+                allTrackers.append(tracker)
             }
         }
+
+        if !storedCategories.isEmpty {
+            categories = storedCategories.compactMap { trackerCategoryStore.decodingCategory(from: $0) }
+        } else {
+            categories.append(TrackerCategory(title: "Трекеры без категорий", trackers: allTrackers))
+        }
+
         visibleTrackers = categories
         filterTrackersForCurrentDay()
     }
@@ -110,26 +122,30 @@ class TrackerViewModel {
     }
     
     func filterTrackersForCurrentDay() {
-        // Получаем текущий день недели как Int (например, 2 для понедельника)
         let currentDayOfWeekInt = Calendar.current.component(.weekday, from: selectedDate)
-
-        // Преобразуем Int в DayOfWeek
+        
         guard let currentDayOfWeek = DayOfWeek.from(intValue: currentDayOfWeekInt) else {
-            return // Если день не распознан
+            return
         }
-
-        // Создаем массив категорий, где трекеры фильтруются по текущему дню
+        
         visibleTrackers = categories.compactMap { category in
-            // Фильтруем трекеры в каждой категории по дням недели
             let filteredTrackers = category.trackers.filter { tracker in
                 tracker.schedule.contains(currentDayOfWeek)
             }
-            
-            // Возвращаем категорию только если есть трекеры для текущего дня
             return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
-
-        // Обновляем UI
+        
+        // Фильтруем закрепленные трекеры по расписанию
+        let filteredPinnedTrackers = pinnedTrackers.filter { tracker in
+            tracker.schedule.contains(currentDayOfWeek)
+        }
+        
+        // Добавляем категорию с закрепленными трекерами только если есть трекеры на этот день
+        if !filteredPinnedTrackers.isEmpty {
+            let pinnedCategory = TrackerCategory(title: "Закрепленные", trackers: filteredPinnedTrackers)
+            visibleTrackers.insert(pinnedCategory, at: 0) // Вставляем в начало списка
+        }
+        
         onVisibleTrackersChanged?(visibleTrackers)
     }
     
@@ -176,6 +192,34 @@ class TrackerViewModel {
         trackerRecordStore.deleteAllRecordFor(tracker: tracker)
         print("Tracker successfully deleted")
         // Обновляем локальные данные
+        loadTrackersFromCoreData()
+    }
+    
+    // Метод для закрепления трекера
+    func pinTracker(_ tracker: Tracker) {
+        print("pinTracker called")
+        trackerStore.pinOrUnpinTracker(tracker: tracker, isPinned: true)
+//        if !pinnedTrackers.contains(where: { $0.id == tracker.id }) {
+//            pinnedTrackers.append(tracker)
+//            // Добавить в категорию "Закрепленные"
+//            if let index = categories.firstIndex(where: { $0.title == "Закрепленные" }) {
+//                categories[index].trackers.append(tracker)
+//            }
+//        }
+        loadTrackersFromCoreData()
+    }
+
+    // Метод для открепления трекера
+    func unpinTracker(_ tracker: Tracker) {
+        print("unpinTracker called")
+        trackerStore.pinOrUnpinTracker(tracker: tracker, isPinned: false)
+        if let index = pinnedTrackers.firstIndex(where: { $0.id == tracker.id }) {
+            pinnedTrackers.remove(at: index)
+            // Удаляем из категории "Закрепленные"
+            if let index = categories.firstIndex(where: { $0.title == "Закрепленные" }) {
+                categories[index].trackers.removeAll(where: { $0.id == tracker.id })
+            }
+        }
         loadTrackersFromCoreData()
     }
     
