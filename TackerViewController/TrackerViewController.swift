@@ -111,7 +111,7 @@ final class TrackerViewController: UIViewController{
     }
     //MARK: - SetUpUIView
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         setUpNavigationBar()
         setupImageView()
         setUpLabels()
@@ -122,9 +122,10 @@ final class TrackerViewController: UIViewController{
     
     private func setUpNavigationBar() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
-        addButton.tintColor = .black
+        addButton.tintColor =  UIColor(named: "YP Black")
         self.navigationItem.leftBarButtonItem = addButton
         
+        datePicker.tintColor = UIColor(named: "YP Background")
         datePicker.clipsToBounds = true
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.calendar.firstWeekday = 2
@@ -157,14 +158,17 @@ final class TrackerViewController: UIViewController{
     }
     
     private func setUpLabels() {
-        trackerLabel.textColor = .black
-        trackerLabel.text = "Трекеры"
+        searchBar.delegate = self
+        searchBar.placeholder = localizedString(key:"searchTextFieldPlaceholder")
+        
+        trackerLabel.textColor = UIColor(named: "YP Black")
+        trackerLabel.text = localizedString(key:"trakerTitle")
         trackerLabel.font = UIFont(name: "YSDisplay-Bold", size: 34)
         trackerLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(trackerLabel)
         
-        descriptionLabel.textColor = .black
-        descriptionLabel.text = "Что будем отслеживать?"
+        descriptionLabel.textColor = UIColor(named: "YP Black")
+        descriptionLabel.text = localizedString(key:"trackersHolderLabel")
         descriptionLabel.textAlignment = .center
         descriptionLabel.font = UIFont(name: "YSDisplay-Medium", size: 12)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -230,7 +234,7 @@ final class TrackerViewController: UIViewController{
     
     private func setUpFilterButton() {
         filterButton.backgroundColor = .systemBlue
-        filterButton.setTitle("Фильтры", for: .normal)
+        filterButton.setTitle(localizedString(key: "filterButton"), for: .normal)
         filterButton.titleLabel?.textColor = .white
         filterButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         filterButton.layer.cornerRadius = 16
@@ -322,7 +326,7 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
               let indexPath = collectionView.indexPath(for: cell) else { return nil }
         let category = viewModel.visibleTrackers[indexPath.section]
         let tracker = viewModel.visibleTrackers[indexPath.section].trackers[indexPath.item]
-        let pinTitle = tracker.isPinned ? "Открепить" : "Закрепить"
+        let pinTitle = tracker.isPinned ? localizedString(key: "unpin") : localizedString(key: "pin")
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
@@ -331,12 +335,12 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
                 self.pinTracker(tracker)
             }
             
-            let editAction = UIAction(title: "Редактировать") { _ in
+            let editAction = UIAction(title: localizedString(key: "edit")) { _ in
                 // Переход на экран редактирования
                 self.editTracker(tracker, category)
             }
             
-            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+            let deleteAction = UIAction(title: localizedString(key: "delete"), attributes: .destructive) { _ in
                 // Удаление категории
                 self.deleteTracker(tracker)
             }
@@ -368,11 +372,11 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
     }
     
     private func deleteTracker(_ tracker: Tracker) {
-        let actionSheet = UIAlertController(title: "Уверены что хотите удалить трекер?", message: nil, preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+        let actionSheet = UIAlertController(title: localizedString(key: "actionSheetTitle"), message: nil, preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: localizedString(key: "delte"), style: .destructive) { _ in
             self.viewModel.deleteTracker(tracker: tracker)
         }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let cancelAction = UIAlertAction(title: localizedString(key: "cancelButton"), style: .cancel)
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
         self.present(actionSheet, animated: true, completion: nil)
@@ -400,6 +404,22 @@ extension TrackerViewController: FilterDelegate {
             isSearch = true
             viewModel.filterCompletedTrackers(isCompleted: false)
         }
-        
     }
+}
+
+extension TrackerViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+           viewModel.searchText = searchText
+       }
+
+       func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+           searchBar.text = ""
+           viewModel.searchText = ""
+           searchBar.resignFirstResponder()
+       }
+
+       private func updateUIWithVisibleTrackers(_ visibleTrackers: [TrackerCategory]) {
+           // Здесь обновляется пользовательский интерфейс с новыми отфильтрованными данными
+           collectionView.reloadData()
+       }
 }

@@ -81,7 +81,7 @@ class TrackerViewModel {
         if !storedCategories.isEmpty {
             categories = storedCategories.compactMap { trackerCategoryStore.decodingCategory(from: $0) }
         } else {
-            categories.append(TrackerCategory(title: "Трекеры без категорий", trackers: allTrackers))
+            categories.append(TrackerCategory(title: localizedString(key: "noCategoriesTrackers"), trackers: allTrackers))
         }
 
         visibleTrackers = categories
@@ -134,22 +134,26 @@ class TrackerViewModel {
             return
         }
         
+        // Фильтруем категории трекеров по дню недели и тексту поиска
         visibleTrackers = categories.compactMap { category in
             let filteredTrackers = category.trackers.filter { tracker in
-                tracker.schedule.contains(currentDayOfWeek)
+                let isInSearchText = searchText.isEmpty || tracker.title.lowercased().contains(searchText.lowercased())
+                let isInSchedule = tracker.schedule.contains(currentDayOfWeek)
+                return isInSearchText && isInSchedule
             }
             return filteredTrackers.isEmpty ? nil : TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
         
-        // Фильтруем закрепленные трекеры по расписанию
+        // Фильтрация закрепленных трекеров по расписанию и поисковому запросу
         let filteredPinnedTrackers = pinnedTrackers.filter { tracker in
-            tracker.schedule.contains(currentDayOfWeek)
+            let isInSearchText = searchText.isEmpty || tracker.title.lowercased().contains(searchText.lowercased())
+            return isInSearchText && tracker.schedule.contains(currentDayOfWeek)
         }
         
-        // Добавляем категорию с закрепленными трекерами только если есть трекеры на этот день
+        // Добавляем категорию с закрепленными трекерами
         if !filteredPinnedTrackers.isEmpty {
             let pinnedCategory = TrackerCategory(title: "Закрепленные", trackers: filteredPinnedTrackers)
-            visibleTrackers.insert(pinnedCategory, at: 0) // Вставляем в начало списка
+            visibleTrackers.insert(pinnedCategory, at: 0)
         }
         
         onVisibleTrackersChanged?(visibleTrackers)
@@ -292,7 +296,7 @@ extension TrackerViewModel {
         }
         
         // Создаем категорию для всех трекеров
-        let allTrackersCategory = TrackerCategory(title: "Все трекеры", trackers: allTrackers)
+        let allTrackersCategory = TrackerCategory(title: localizedString(key: "allTrackers"), trackers: allTrackers)
         
         // Обновляем видимые трекеры
         self.visibleTrackers = [allTrackersCategory]

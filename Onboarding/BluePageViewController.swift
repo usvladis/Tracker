@@ -11,7 +11,7 @@ class BluePageViewController: UIViewController {
     
     private let label: UILabel = {
         let label = UILabel()
-        label.text = "Отслеживайте только то, что хотите"
+        label.text = localizedString(key:"onboardScreen1")
         label.font = UIFont(name: "YSDisplay-Bold", size: 32)
         label.textColor = .black
         label.numberOfLines = 2
@@ -23,7 +23,7 @@ class BluePageViewController: UIViewController {
     
     private let button: UIButton = {
         let button = UIButton()
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(localizedString(key:"onboardTitle"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white

@@ -16,13 +16,13 @@ enum FilterCase: Int, CaseIterable {
   var title: String {
     switch self {
     case .all:
-      return "Все трекеры"
+      return localizedString(key: "allTrackers")
     case .today:
-      return "Трекеры на сегодня"
+      return localizedString(key: "todayTrackers")
     case .complete:
-      return "Завершенные"
+      return localizedString(key: "doneTrackers")
     case .uncomplete:
-      return "Не звершенные"
+      return localizedString(key: "unDoneTrackers")
     }
   }
 }
@@ -35,7 +35,7 @@ final class FilterCategoryViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Фильтры"
+        label.text = localizedString(key: "filterTitle")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,10 +59,6 @@ final class FilterCategoryViewController: UIViewController {
     
     var filterState: FilterCase = .all
     
-    private var filters = ["Все трекеры",
-                           "Трекеры на сегодня",
-                           "Завершенные",
-                           "Не звершенные"]
     
     // MARK: - Lifecycle
     override func viewDidLoad() {

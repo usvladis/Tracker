@@ -22,6 +22,10 @@
 		215818DF2C90C60A00DA42B3 /* FilterCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215818DE2C90C60A00DA42B3 /* FilterCategoryViewController.swift */; };
 		215818E12C90CE8500DA42B3 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215818E02C90CE8500DA42B3 /* EditCategoryViewController.swift */; };
 		217119E42C92FFAD0065DC2E /* EditTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217119E32C92FFAD0065DC2E /* EditTrackerViewController.swift */; };
+		217119E92CA5B5CC0065DC2E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 217119E72CA5B5CC0065DC2E /* Localizable.strings */; };
+		217119ED2CA5B67E0065DC2E /* NSLocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217119EC2CA5B67E0065DC2E /* NSLocalizedString.swift */; };
+		217119F02CA5D39F0065DC2E /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 217119EF2CA5D39F0065DC2E /* InlineSnapshotTesting */; };
+		217119F22CA5D39F0065DC2E /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 217119F12CA5D39F0065DC2E /* SnapshotTesting */; };
 		218881212C2DCEEE0032D98E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881202C2DCEEE0032D98E /* AppDelegate.swift */; };
 		218881232C2DCEEE0032D98E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881222C2DCEEE0032D98E /* SceneDelegate.swift */; };
 		218881252C2DCEEE0032D98E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218881242C2DCEEE0032D98E /* ViewController.swift */; };
@@ -84,6 +88,9 @@
 		215818DE2C90C60A00DA42B3 /* FilterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryViewController.swift; sourceTree = "<group>"; };
 		215818E02C90CE8500DA42B3 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
 		217119E32C92FFAD0065DC2E /* EditTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTrackerViewController.swift; sourceTree = "<group>"; };
+		217119E82CA5B5CC0065DC2E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		217119EB2CA5B6130065DC2E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		217119EC2CA5B67E0065DC2E /* NSLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLocalizedString.swift; sourceTree = "<group>"; };
 		2188811D2C2DCEEE0032D98E /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		218881202C2DCEEE0032D98E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		218881222C2DCEEE0032D98E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -184,9 +191,19 @@
 			path = CategoriesViewController;
 			sourceTree = "<group>";
 		};
+		217119E52CA5B4010065DC2E /* Resourses */ = {
+			isa = PBXGroup;
+			children = (
+				217119E72CA5B5CC0065DC2E /* Localizable.strings */,
+				217119EC2CA5B67E0065DC2E /* NSLocalizedString.swift */,
+			);
+			path = Resourses;
+			sourceTree = "<group>";
+		};
 		218881142C2DCEEE0032D98E = {
 			isa = PBXGroup;
 			children = (
+				217119E52CA5B4010065DC2E /* Resourses */,
 				213983582C8B4D31000429EB /* CategoriesViewController */,
 				218DC6572C7609BB00603787 /* TabBarViewController */,
 				218DC6502C74B40000603787 /* Onboarding */,
@@ -408,6 +425,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 218881142C2DCEEE0032D98E;
 			productRefGroup = 2188811E2C2DCEEE0032D98E /* Products */;
@@ -426,6 +444,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217119E92CA5B5CC0065DC2E /* Localizable.strings in Resources */,
 				2188812D2C2DCEEF0032D98E /* Assets.xcassets in Resources */,
 				21EDAB5A2C2DFF4D00C2CD21 /* YS Display-Medium.ttf in Resources */,
 				21EDAB592C2DFF4D00C2CD21 /* YS Display-Bold.ttf in Resources */,
@@ -467,6 +486,7 @@
 				2188812B2C2DCEEE0032D98E /* Tracker.xcdatamodeld in Sources */,
 				210E27202C345AAA00189D83 /* TrackersHeaderReusableView.swift in Sources */,
 				211C4B272C6CF55F0022155F /* TrackerCategoryStore.swift in Sources */,
+				217119ED2CA5B67E0065DC2E /* NSLocalizedString.swift in Sources */,
 				217119E42C92FFAD0065DC2E /* EditTrackerViewController.swift in Sources */,
 				218881252C2DCEEE0032D98E /* ViewController.swift in Sources */,
 				21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */,
@@ -525,6 +545,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		217119E72CA5B5CC0065DC2E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				217119E82CA5B5CC0065DC2E /* en */,
+				217119EB2CA5B6130065DC2E /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		2188812E2C2DCEEF0032D98E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -541,6 +570,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -604,6 +634,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
