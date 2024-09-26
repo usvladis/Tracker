@@ -21,6 +21,9 @@ final class TrackerViewController: UIViewController{
     private var collectionView: UICollectionView!
     private var filterButton = UIButton()
     
+    var isSearch = false
+    var filterState: FilterCase = .all
+    
     private var viewModel: TrackerViewModel!
     
     override func viewDidLoad() {
@@ -96,6 +99,7 @@ final class TrackerViewController: UIViewController{
     
     @objc private func filterButtonTapped() {
         let filterCategoryVC = FilterCategoryViewController()
+        filterCategoryVC.filterDelegate = self
         filterCategoryVC.modalPresentationStyle = .popover
         present(filterCategoryVC, animated: true, completion: nil)
     }
@@ -372,5 +376,30 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
         self.present(actionSheet, animated: true, completion: nil)
+    }
+}
+
+extension TrackerViewController: FilterDelegate {
+    func setFilter(_ filterState: FilterCase) {
+        self.filterState = filterState
+        
+        switch filterState {
+        case .all:
+            isSearch = false
+            viewModel.showAllTrackers()
+            collectionView.reloadData()
+        case .today:
+            isSearch = false
+            datePicker.date = Date()
+            viewModel.selectedDate = datePicker.date
+            viewModel.filterTrackersForCurrentDay()
+        case .complete:
+            isSearch = true
+            viewModel.filterCompletedTrackers(isCompleted: true)
+        case .uncomplete:
+            isSearch = true
+            viewModel.filterCompletedTrackers(isCompleted: false)
+        }
+        
     }
 }

@@ -7,6 +7,29 @@
 
 import UIKit
 
+enum FilterCase: Int, CaseIterable {
+  case all
+  case today
+  case complete
+  case uncomplete
+  
+  var title: String {
+    switch self {
+    case .all:
+      return "Все трекеры"
+    case .today:
+      return "Трекеры на сегодня"
+    case .complete:
+      return "Завершенные"
+    case .uncomplete:
+      return "Не звершенные"
+    }
+  }
+}
+
+protocol FilterDelegate: AnyObject {
+  func setFilter(_ filterState: FilterCase)
+}
 
 final class FilterCategoryViewController: UIViewController {
     
@@ -31,6 +54,10 @@ final class FilterCategoryViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
+    
+    weak var filterDelegate: FilterDelegate?
+    
+    var filterState: FilterCase = .all
     
     private var filters = ["Все трекеры",
                            "Трекеры на сегодня",
@@ -69,15 +96,16 @@ final class FilterCategoryViewController: UIViewController {
 extension FilterCategoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filters.count
+        return FilterCase.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.backgroundColor = .clear
-        let item = "\(filters[indexPath.row])"
-        cell.textLabel?.text = item
+        let item = FilterCase(rawValue: indexPath.row)!
+        cell.textLabel?.text = item.title
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
+        cell.accessoryType = item == filterState ? .checkmark : .none
         cell.textLabel?.textColor = .black
         return cell
     }
@@ -91,9 +119,10 @@ extension FilterCategoryViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Фильтруем список трекеров по конкретному фильтру
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.dismiss(animated: true)
-        }
+      guard let selectedFilter = FilterCase(rawValue: indexPath.row) else { return }
+      
+      filterState = selectedFilter
+      filterDelegate?.setFilter(selectedFilter)      
+      self.dismiss(animated: true)
     }
 }

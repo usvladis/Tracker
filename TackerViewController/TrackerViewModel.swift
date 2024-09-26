@@ -37,6 +37,12 @@ class TrackerViewModel {
         }
     }
     
+    var searchText: String = "" {
+        didSet {
+            filterTrackersForCurrentDay()
+        }
+    }
+    
     var pinnedTrackers: [Tracker] = []
     
     var onCategoriesChanged: (([TrackerCategory]) -> Void)?
@@ -265,5 +271,76 @@ class TrackerViewModel {
         
         // Перезагружаем видимые категории и трекеры
         filterTrackersForCurrentDay()
+    }
+}
+
+extension TrackerViewModel {
+    func showAllTrackers() {
+        // Подгружаем трекеры из хранилища
+        let storedTrackers = trackerStore.fetchTracker()
+        
+        var allTrackers = [Tracker]()
+        for tracker in storedTrackers {
+            allTrackers.append(tracker)
+        }
+        
+        print("Fetched trackers: \(allTrackers.count)")
+        
+        guard !allTrackers.isEmpty else {
+            print("No trackers found")
+            return
+        }
+        
+        // Создаем категорию для всех трекеров
+        let allTrackersCategory = TrackerCategory(title: "Все трекеры", trackers: allTrackers)
+        
+        // Обновляем видимые трекеры
+        self.visibleTrackers = [allTrackersCategory]
+        print("Visible trackers categories updated: \(self.visibleTrackers.count) categories")
+        
+        // Сообщаем о том, что видимые трекеры изменились
+        onVisibleTrackersChanged?(visibleTrackers)
+        
+    }
+    
+    func filterCompletedTrackers(isCompleted: Bool) {
+        // Получаем текущий день недели для выбранной даты
+        let calendar = Calendar.current
+        let selectedWeekday = calendar.component(.weekday, from: selectedDate)
+        
+        // Преобразуем текущий день недели в наш тип DayOfWeek
+        guard let currentDayOfWeek = DayOfWeek.from(intValue: selectedWeekday) else {
+            print("Ошибка: не удалось определить текущий день недели")
+            return
+        }
+        
+        // Фильтруем категории и трекеры внутри них
+        let filteredCategories = categories.map { category -> TrackerCategory in
+            let filteredTrackers = category.trackers.filter { tracker in
+                // Проверяем, активен ли трекер в выбранный день
+                let isTrackerActiveToday = tracker.schedule.contains(currentDayOfWeek)
+                
+                // Если трекер не активен в этот день, не отображаем его
+                guard isTrackerActiveToday else { return false }
+                
+                // Проверяем, выполнен ли трекер на выбранную дату
+                let isTrackerCompleted = completedTrackers.contains { record in
+                    record.trackerId == tracker.id && Calendar.current.isDate(record.date, inSameDayAs: selectedDate)
+                }
+                
+                // Возвращаем трекеры в зависимости от их состояния (выполнен/не выполнен)
+                return isCompleted ? isTrackerCompleted : !isTrackerCompleted
+            }
+            
+            // Возвращаем категорию с отфильтрованными трекерами
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }
+        
+        // Убираем категории, в которых нет трекеров после фильтрации
+        let nonEmptyCategories = filteredCategories.filter { !$0.trackers.isEmpty }
+        
+        // Обновляем видимые трекеры (категории)
+        self.visibleTrackers = nonEmptyCategories
+        onVisibleTrackersChanged?(visibleTrackers)
     }
 }
