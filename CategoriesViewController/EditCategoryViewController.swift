@@ -61,6 +61,8 @@ final class EditCategoryViewController: UIViewController {
         if let category = category {
             textField.text = category.title
         }
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setUpUI() {
@@ -107,6 +109,10 @@ final class EditCategoryViewController: UIViewController {
         // Передаем обновленное название через делегат
         delegate?.editCategoryScreen(self, didEditCategory: category, with: newTitle)
         dismiss(animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

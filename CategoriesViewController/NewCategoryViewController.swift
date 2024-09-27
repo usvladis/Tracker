@@ -56,6 +56,8 @@ final class NewCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setUpUI() {
@@ -99,5 +101,9 @@ final class NewCategoryViewController: UIViewController {
         }
         delegate?.newCategoryScreen(self, didAddCategoryWithTitle: categoryTitle)
         dismiss(animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

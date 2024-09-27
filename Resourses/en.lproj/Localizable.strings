@@ -71,3 +71,8 @@
 "friday" = "Friday";
 "saturday" = "Saturday";
 "sunday" = "Sunday";
+
+//Days formatter
+
+"days_format" = "%d day";
+"days_format_plural" = "%d days";

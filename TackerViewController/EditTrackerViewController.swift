@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//TODO: Исправить отображение цвета трекера при ипопадании пользователя на страницу редактирования трекера
 
 protocol EditTrackerDelegate: AnyObject{
     func didEditTracker(_ tracker: Tracker, _ category: String, _ newCategory: String)
@@ -25,6 +24,8 @@ class EditTrackerViewController: UIViewController {
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
     private var selectedSchedule: [DayOfWeek]?
+    
+    private var daysFormatter = DaysFormatter()
     
     private var habit: [(name: String, pickedSettings: String)] = [
         (name: "Категория", pickedSettings: ""),
@@ -357,7 +358,7 @@ class EditTrackerViewController: UIViewController {
         }
         
         if let completedDays = completedDays {
-            daysLabel.text = "\(completedDays) дней"
+            daysLabel.text = daysFormatter.formatDays(completedDays)
         }
         
         if let category = category {

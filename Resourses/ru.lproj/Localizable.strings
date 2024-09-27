@@ -71,3 +71,9 @@
 "friday" = "Пятница";
 "saturday" = "Суббота";
 "sunday" = "Воскресенье";
+
+//Days formatter
+
+"days_format" = "%d день";
+"days_format_plural" = "%d дня";
+"days_format_many" = "%d дней";
