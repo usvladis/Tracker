@@ -20,6 +20,7 @@ class EditTrackerViewController: UIViewController {
     var tracker: Tracker?
     var category: TrackerCategory?
     var newCategory: TrackerCategory?
+    var completedDays: Int?
     
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
@@ -61,7 +62,7 @@ class EditTrackerViewController: UIViewController {
     
     private var daysLabel: UILabel = {
         var label = UILabel()
-        label.text = "5 дней"
+        label.text = " дней"
         label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 32)
         label.textAlignment = .center
@@ -355,6 +356,10 @@ class EditTrackerViewController: UIViewController {
             selectedColor = tracker.color
         }
         
+        if let completedDays = completedDays {
+            daysLabel.text = "\(completedDays) дней"
+        }
+        
         if let category = category {
             habit[0].pickedSettings = category.title
         }
@@ -392,7 +397,7 @@ extension EditTrackerViewController: UITableViewDelegate, UITableViewDataSource 
         let item = "\(habit[indexPath.row].name)"
         cell.textLabel?.text = item
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = UIColor(named: "YP Black")
         cell.detailTextLabel?.textColor = .gray
         if item == "Категория" {
             cell.detailTextLabel?.text = "\(category?.title ?? "")"

@@ -340,6 +340,7 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
         let category = viewModel.visibleTrackers[indexPath.section]
         let tracker = viewModel.visibleTrackers[indexPath.section].trackers[indexPath.item]
         let pinTitle = tracker.isPinned ? localizedString(key: "unpin") : localizedString(key: "pin")
+        let completedDays = viewModel.completedTrackers.filter { $0.trackerId == tracker.id }.count
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
@@ -350,7 +351,7 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
             
             let editAction = UIAction(title: localizedString(key: "edit")) { _ in
                 // Переход на экран редактирования
-                self.editTracker(tracker, category)
+                self.editTracker(tracker, category, completedDays)
             }
             
             let deleteAction = UIAction(title: localizedString(key: "delete"), attributes: .destructive) { _ in
@@ -375,12 +376,13 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
         }
     }
     
-    private func editTracker(_ tracker: Tracker, _ category: TrackerCategory) {
+    private func editTracker(_ tracker: Tracker, _ category: TrackerCategory, _ completedDays: Int) {
         yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "edit"])
         let editTrackerViewController = EditTrackerViewController()
         editTrackerViewController.delegate = self
         editTrackerViewController.tracker = tracker
         editTrackerViewController.category = category
+        editTrackerViewController.completedDays = completedDays
         editTrackerViewController.modalPresentationStyle = .popover
         present(editTrackerViewController, animated: true)
     }
