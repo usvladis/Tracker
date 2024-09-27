@@ -43,6 +43,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новое нерегулярное событие"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +54,7 @@ class CreateNewIrregularEventViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "    Введите название трекера"
         textField.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        textField.backgroundColor = UIColor(named: "TextFieldColor")
+        textField.backgroundColor = UIColor(named: "YP Background")
         textField.layer.cornerRadius = 10
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -76,6 +77,7 @@ class CreateNewIrregularEventViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.tableHeaderView = nil
         tableView.sectionHeaderHeight = 0
+        tableView.backgroundColor = UIColor(named: "YP Background")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
@@ -84,6 +86,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     private var emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "Emoji"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -93,6 +96,7 @@ class CreateNewIrregularEventViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "emojiCell")
         return collectionView
@@ -101,6 +105,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     private var colorLabel: UILabel = {
         let label = UILabel()
         label.text = "Цвет"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -110,6 +115,7 @@ class CreateNewIrregularEventViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         return collectionView
@@ -163,7 +169,7 @@ class CreateNewIrregularEventViewController: UIViewController {
 
     // MARK: - Setup UI
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         
         // Add subviews
         view.addSubview(scrollView)
@@ -261,7 +267,8 @@ class CreateNewIrregularEventViewController: UIViewController {
                                  title: trackerTitle, 
                                  color: selectedColor,
                                  emoji: selectedEmoji,
-                                 schedule: DayOfWeek.allCases)
+                                 schedule: DayOfWeek.allCases,
+                                 trackerCategory: selectedCategory?.title ?? "")
         //trackerVC.createNewTracker(tracker: newTracker)
         delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
@@ -291,7 +298,7 @@ class CreateNewIrregularEventViewController: UIViewController {
     private func checkIfCorrect() {
         if let text = nameTextField.text, !text.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear && selectedCategory != nil {
             createButton.isEnabled = true
-            createButton.backgroundColor = .black
+            createButton.backgroundColor = UIColor(named: "YP Black")
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .gray
@@ -314,7 +321,7 @@ extension CreateNewIrregularEventViewController: UITableViewDelegate, UITableVie
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
             cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-            cell.textLabel?.textColor = .black
+            cell.textLabel?.textColor = UIColor(named: "YP Black")
             
             // Устанавливаем текст категории в detailTextLabel
             cell.detailTextLabel?.text = selectedCategory?.title

@@ -1,0 +1,79 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Владислав Усачев on 26.09.2024.
+  
+*/
+//Onboarding
+"onboardScreen1" = "Track only what you want";
+"onboardScreen2" = "Even if it's not liters of water and yoga";
+"onboardTitle" = "This is technology!";
+
+//Main Screen
+"trakerTitle" = "Trackers";
+"filterButton" = "Filters";
+"statisticTitle" = "Statistic";
+"statisticsPlugLabel" = "Nothing to analize";
+"searchTextFieldPlaceholder" = "Search";
+
+//Action Sheet
+"cancelButton" = "Cancel";
+"addButton" = "Сreate";
+"editButton" = "Edit";
+
+//Holders
+"trackersHolderLabel" = "What will we track?";
+"trackersSearchLabel" = "Nothing found";
+
+//Filters
+"filterTitle" = "Filters";
+"allTrackers" = "All trackers";
+"todayTrackers" = "Today trackers";
+"doneTrackers" = "Completed";
+"unDoneTrackers" = "Uncompleted";
+
+//Context menu
+"pin" = "Pin";
+"unpin" = "Unpin";
+"edit" = "Edit";
+"delete" = "Delete";
+
+//Action Sheet
+"actionSheetTitle" = "Are you sure you want to delete this tracker?";
+"deleteButton" = "Delete";
+"cancelButton" = "Cancel";
+
+// Statistic
+"doneTrackersCount" = "Completed trackers";
+"noCategoriesTrackers" = "Homeless trackers";
+
+//Create new tracker
+
+"createTrackerLabel" = "Create tracker";
+"habbitButton" = "Habbit";
+"irregularEventButton" = "Irregular Event";
+"newHabbitLabel" = "New habbit";
+"newIrregularLabel" = "New irregular event";
+"categoriaLabel" = "Categoria";
+"scheduleLabel" = "Schedule";
+"colorLabel" = "Color";
+"cancelButton" = "Cancel";
+"createButton" = "Create";
+"textFieldLabel" = "    Enter tracker name";
+
+//Schedule
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+
+//Days formatter
+
+"days_format_zero" = "0 days";
+"days_format" = "%d day";
+"days_format_plural" = "%d days";

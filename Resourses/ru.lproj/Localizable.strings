@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Владислав Усачев on 26.09.2024.
+  
+*/
+//Onboarding
+"onboardScreen1" = "Отслеживайте только то, что хотите";
+"onboardScreen2" = "Даже если это не литры воды и йога";
+"onboardTitle" = "Вот это технологии!";
+
+//Main Screen
+"trakerTitle" = "Трекеры";
+"filterButton" = "Фильтры";
+"statisticTitle" = "Статистика";
+"statisticsPlugLabel" = "Анализировать пока нечего";
+"searchTextFieldPlaceholder" = "Поиск";
+
+//Action Sheet
+"cancelButton" = "Отменить";
+"addButton" = "Cоздать";
+"editButton" = "Редактировать";
+
+//Holders
+"trackersHolderLabel" = "Что будем отслеживать?";
+"trackersSearchLabel" = "Ничего не найдено";
+
+//Filters
+"filterTitle" = "Фильтры";
+"allTrackers" = "Все трекеры";
+"todayTrackers" = "Трекеры на сегодня";
+"doneTrackers" = "Завершенные";
+"unDoneTrackers" = "Не завершенные";
+
+//Context menu
+"pin" = "Закрепить";
+"unpin" = "Открепить";
+"edit" = "Редактировать";
+"delete" = "Удалить";
+
+//Action Sheet
+"actionSheetTitle" = "Уверены что хотите удалить трекер?";
+"deleteButton" = "Удалить";
+"cancelButton" = "Отменить";
+
+// Statistic
+"doneTrackersCount" = "Трекеров завершено";
+"noCategoriesTrackers" = "Трекеры без категорий";
+
+//Create new tracker
+
+"createTrackerLabel" = "Создание трекера";
+"habbitButton" = "Привычка";
+"irregularEventButton" = "Нерегулярное событие";
+"newHabbitLabel" = "Новая привычка";
+"newIrregularLabel" = "Новое нерегулярное событие";
+"categoriaLabel" = "Категория";
+"scheduleLabel" = "Расписание";
+"colorLabel" = "Цвет";
+"cancelButton" = "Отменить";
+"createButton" = "Создать";
+"textFieldLabel" = "    Введите название трекера";
+
+//Schedule
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+
+//Days formatter
+
+"days_format_zero" = "0 дней";
+"days_format" = "%d день";
+"days_format_plural" = "%d дня";
+"days_format_many" = "%d дней";

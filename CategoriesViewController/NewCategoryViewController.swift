@@ -18,6 +18,7 @@ final class NewCategoryViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новая категория"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -26,8 +27,8 @@ final class NewCategoryViewController: UIViewController {
     
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = UIColor(named: "TextFieldColor")
-        textField.textColor = .black
+        textField.backgroundColor = UIColor(named: "YP Background")
+        textField.textColor = UIColor(named: "YP Black")
         textField.placeholder = "Введите название категории"
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftView = paddingView
@@ -45,9 +46,9 @@ final class NewCategoryViewController: UIViewController {
         button.setTitle("Готово", for: .normal)
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.backgroundColor = .black
+        button.backgroundColor = UIColor(named: "YP Black")
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -55,10 +56,12 @@ final class NewCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setUpUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         setupCategoryView()
         setUpButton()
     }
@@ -98,5 +101,9 @@ final class NewCategoryViewController: UIViewController {
         }
         delegate?.newCategoryScreen(self, didAddCategoryWithTitle: categoryTitle)
         dismiss(animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

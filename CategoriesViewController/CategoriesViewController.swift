@@ -6,11 +6,6 @@
 //
 
 import UIKit
-/*
-Готов UI
-TODO: При выборе категории передавать ее на предидущий экран
-Настроить отображение tableView с категориями
-*/
 
 protocol CategoryViewControllerDelegate: AnyObject {
     func categoryScreen(_ screen: CategoriesViewController, didSelectedCategory category: TrackerCategory)
@@ -25,6 +20,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         let label = UILabel()
         label.text = "Категории"
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
+        label.textColor = UIColor(named: "YP Black")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -36,7 +32,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         tableView.rowHeight = 75
         tableView.isScrollEnabled = true
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier)
         return tableView
@@ -45,8 +41,8 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
     private let addCategory: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .black
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
+        button.backgroundColor = UIColor(named: "YP Black")
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -92,7 +88,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
     }
     
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -136,6 +132,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         label.text = "Привычки и события можно \nобъединить по смыслу"
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 0
+        label.textColor = UIColor(named: "YP Black")
         label.textAlignment = .center
         stackView.addArrangedSubview(label)
 
@@ -185,6 +182,9 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         let category = viewModel.category(at: indexPath.row)
         cell.configure(with: category)
         
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.addInteraction(interaction)
+        
         // Сбросим маску на случай, если ячейка будет переиспользована
         cell.layer.mask = nil
         
@@ -223,6 +223,74 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension CategoriesViewController: UIContextMenuInteractionDelegate {
+    
+    // Создаем меню при долгом нажатии на ячейку
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        
+        // Определяем индекс ячейки, которая была долгим нажатием
+        guard let cell = interaction.view as? CategoryTableViewCell,
+              let indexPath = tableView.indexPath(for: cell) else { return nil }
+        
+        let category = viewModel.category(at: indexPath.row)
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(title: "Редактировать", image: UIImage(systemName: "pencil")) { _ in
+                // Переход на экран редактирования
+                self.editCategory(category)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                // Удаление категории
+                self.deleteCategory(at: indexPath)
+            }
+            
+            // Возвращаем контекстное меню с опциями
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+    }
+    
+    private func editCategory(_ category: TrackerCategory) {
+        // Переход на экран редактирования категории
+        let editVC = EditCategoryViewController()
+        editVC.category = category  // Передаем категорию в контроллер редактирования
+        editVC.delegate = self // Устанавливаем делегат для обновления
+        editVC.modalPresentationStyle = .popover
+        present(editVC, animated: true)
+    }
+    
+    private func deleteCategory(at indexPath: IndexPath) {
+        _ = viewModel.category(at: indexPath.row)
+        
+        // Создаем Alert Controller
+        let alertController = UIAlertController(title: "Эта категория точно не нужна?",
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        
+        // Добавляем кнопку "Удалить"
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+            // Удаляем категорию из ViewModel
+            self.viewModel.deleteCategory(at: indexPath.row)
+        }
+        
+        // Добавляем кнопку "Отменить"
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+        
+        // Добавляем действия в контроллер
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        // Показываем Alert Controller
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension CategoriesViewController: EditCategoryViewControllerDelegate {
+    func editCategoryScreen(_ screen: EditCategoryViewController, didEditCategory category: TrackerCategory, with newTitle: String) {
+        viewModel.updateCategory(category, with: newTitle)
+    }
+}
+
 final class CategoryTableViewCell: UITableViewCell {
     static let reuseIdentifier = "CategoryTableViewCell"
 
@@ -237,8 +305,8 @@ final class CategoryTableViewCell: UITableViewCell {
 
     private func setupUI() {
         textLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        textLabel?.textColor = .black
-        backgroundColor = UIColor(named: "TextFieldColor")
+        textLabel?.textColor = UIColor(named: "YP Black")
+        backgroundColor = UIColor(named: "YP Background")
         selectionStyle = .none
     }
 

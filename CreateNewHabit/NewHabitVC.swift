@@ -23,8 +23,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     private var selectedColor: UIColor = .clear
     
     private var habit: [(name: String, pickedSettings: String)] = [
-        (name: "Категория", pickedSettings: ""),
-        (name: "Расписание", pickedSettings: "")
+        (name: localizedString(key: "categoriaLabel"), pickedSettings: ""),
+        (name: localizedString(key: "scheduleLabel"), pickedSettings: "")
     ]
 
     // MARK: - UI Elements
@@ -48,7 +48,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая привычка"
+        label.text = localizedString(key: "newHabbitLabel")
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,9 +58,9 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var nameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "    Введите название трекера"
+        textField.placeholder = localizedString(key: "textFieldLabel")
         textField.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        textField.backgroundColor = UIColor(named: "TextFieldColor")
+        textField.backgroundColor = UIColor(named: "YP Background")
         textField.layer.cornerRadius = 10
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -78,6 +79,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     private var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.layer.cornerRadius = 10
+        tableView.backgroundColor = UIColor(named: "YP Background")
         tableView.separatorStyle = .singleLine
         tableView.isScrollEnabled = false
         tableView.tableHeaderView = nil
@@ -90,6 +92,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     private var emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "Emoji"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -99,6 +102,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "emojiCell")
         return collectionView
@@ -106,7 +110,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var colorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Цвет"
+        label.text = localizedString(key: "colorLabel")
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -116,6 +121,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         return collectionView
@@ -123,7 +129,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(localizedString(key: "cancelButton"), for: .normal)
         button.setTitleColor(.red, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
@@ -134,8 +140,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private let createButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Создать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle(localizedString(key: "createButton"), for: .normal)
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -168,7 +174,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
 
     // MARK: - Setup UI
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         
         // Add subviews
         view.addSubview(scrollView)
@@ -267,8 +273,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
                                  title: trackerTitle,
                                  color: selectedColor,
                                  emoji: selectedEmoji,
-                                 schedule: selectedDays)
-        //trackerVC.createNewTracker(tracker: newTracker)
+                                 schedule: selectedDays,
+                                 trackerCategory: selectedCategory?.title ?? "")
         delegate?.didCreateNewHabit(newTracker, selectedCategory?.title ?? "")
         dismiss(animated: true)
     }
@@ -306,7 +312,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     private func checkIfCorrect() {
         if let text = nameTextField.text, !text.isEmpty && !selectedDays.isEmpty && selectedEmoji != "" && selectedColor != UIColor.clear {
             createButton.isEnabled = true
-            createButton.backgroundColor = .black
+            createButton.backgroundColor = UIColor(named: "YP Black")
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .gray
@@ -343,13 +349,13 @@ extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
         let item = "\(habit[indexPath.row].name)"
         cell.textLabel?.text = item
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = UIColor(named: "YP Black")
         cell.detailTextLabel?.textColor = .gray
-        if item == "Категория" {
+        if item == localizedString(key: "categoriaLabel") {
             cell.detailTextLabel?.text = selectedCategory?.title
             cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         }
-        if item == "Расписание" {
+        if item == localizedString(key: "scheduleLabel") {
             cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
             cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         }

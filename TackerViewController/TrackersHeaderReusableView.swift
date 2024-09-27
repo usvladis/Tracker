@@ -21,7 +21,7 @@ class TrackersHeaderReusableView: UICollectionReusableView{
     
     func setUpTitle() {
         titleLabel.font = UIFont(name: "YSDisplay-Bold", size: 19)
-        titleLabel.textColor = .black
+        titleLabel.textColor =  UIColor(named: "YP Black")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         

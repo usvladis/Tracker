@@ -25,15 +25,15 @@ final class CreateTrackerViewController: UIViewController{
     }
     
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         setUpLabel()
         setUpButtons()
     }
     
     private func setUpLabel() {
-        titleLabel.text = "Создание трекера"
+        titleLabel.text = localizedString(key: "createTrackerLabel")
         titleLabel.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        titleLabel.textColor = .black
+        titleLabel.textColor = UIColor(named: "YP Black")
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
@@ -47,21 +47,22 @@ final class CreateTrackerViewController: UIViewController{
     }
     
     private func setUpButtons() {
-        habitButton.setTitle("Привычка", for: .normal)
+        habitButton.setTitle(localizedString(key: "habbitButton"), for: .normal)
+        habitButton.setTitleColor(UIColor(named: "YP White"), for: .normal)
         habitButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        habitButton.titleLabel?.textColor = .white
         habitButton.titleLabel?.textAlignment = .center
-        habitButton.backgroundColor = .black
+        habitButton.backgroundColor = UIColor(named: "YP Black")
         habitButton.layer.cornerRadius = 15
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(habitButton)
         
-        irregularEventButton.setTitle("Нерегулярное событие", for: .normal)
+        irregularEventButton.setTitle(localizedString(key: "irregularEventButton"), for: .normal)
+        irregularEventButton.setTitleColor(UIColor(named: "YP White"), for: .normal)
         irregularEventButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        irregularEventButton.titleLabel?.textColor = .white
+        irregularEventButton.titleLabel?.textColor = UIColor(named: "YP White")
         irregularEventButton.titleLabel?.textAlignment = .center
-        irregularEventButton.backgroundColor = .black
-        irregularEventButton.tintColor = .white
+        irregularEventButton.backgroundColor = UIColor(named: "YP Black")
+        irregularEventButton.tintColor = UIColor(named: "YP White")
         irregularEventButton.layer.cornerRadius = 15
         irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(irregularEventButton)

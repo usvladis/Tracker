@@ -45,21 +45,35 @@ final class TrackerRecordStore {
     }
   }
 
-  func deleteRecord(for trackerRecord: TrackerRecord) {
-      let fetchRequest: NSFetchRequest<TrackerRecordCD> = TrackerRecordCD.fetchRequest()
-      fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", trackerRecord.trackerId as CVarArg, trackerRecord.date as CVarArg)
+    func deleteRecord(for trackerRecord: TrackerRecord) {
+        let fetchRequest: NSFetchRequest<TrackerRecordCD> = TrackerRecordCD.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", trackerRecord.trackerId as CVarArg, trackerRecord.date as CVarArg)
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let recordToDelete = results.first {
+                context.delete(recordToDelete)
+                try context.save()
+                print("Record deleted: \(trackerRecord)")  // Log for debugging
+            } else {
+                print("Record not found: \(trackerRecord)")  // Log if record not found
+            }
+        } catch {
+            print("Failed to delete record: \(error)")
+        }
+    }
+    
+    func deleteAllRecordFor(tracker: Tracker) {
+      let fetchRequest = NSFetchRequest<TrackerRecordCD>(entityName: "TrackerRecordCD")
+      fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
       do {
-          let results = try context.fetch(fetchRequest)
-          if let recordToDelete = results.first {
-              context.delete(recordToDelete)
-              try context.save()
-              print("Record deleted: \(trackerRecord)")  // Log for debugging
-          } else {
-              print("Record not found: \(trackerRecord)")  // Log if record not found
-          }
+        let records = try context.fetch(fetchRequest)
+        for recordToDelete in records {
+          context.delete(recordToDelete)
+        }
+        try context.save()
       } catch {
-          print("Failed to delete record: \(error)")
+        print("Error deleting records: \(error.localizedDescription)")
       }
-  }
+    }
 }
 

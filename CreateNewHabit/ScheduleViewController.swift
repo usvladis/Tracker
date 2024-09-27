@@ -24,6 +24,7 @@ class ScheduleViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Расписание"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +34,7 @@ class ScheduleViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: "switchCell")
-        tableView.backgroundColor = .lightGray
+        tableView.backgroundColor = .clear
         tableView.layer.cornerRadius = 10
         tableView.separatorStyle = .singleLine
         tableView.isScrollEnabled = false
@@ -47,8 +48,8 @@ class ScheduleViewController: UIViewController {
     private let doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Готово", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .black
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
+        button.backgroundColor = UIColor(named: "YP Black")
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -70,7 +71,7 @@ class ScheduleViewController: UIViewController {
 
     // MARK: - Setup UI
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         
         // Add subviews
         view.addSubview(titleLabel)
@@ -164,7 +165,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     private lazy var cellTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -197,14 +198,14 @@ class SwitchTableViewCell: UITableViewCell {
     
     func configureCell(with weekDay: DayOfWeek, isLastCell: Bool, isSelected: Bool) {
         self.weekDay = weekDay
-        backgroundColor = UIColor(named: "ypBackground")
+        backgroundColor = UIColor(named: "YP Background")
         cellTitleLabel.text = weekDay.rawValue
         separatorView.isHidden = isLastCell
         switchButton.isOn = isSelected
     }
     
     private func setupViews() {
-        contentView.backgroundColor = UIColor(named: "TextFieldBackgroung")
+        contentView.backgroundColor = UIColor(named: "YP Background")
         contentView.addSubview(cellTitleLabel)
         contentView.addSubview(switchButton)
         contentView.addSubview(separatorView)

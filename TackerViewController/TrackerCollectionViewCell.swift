@@ -9,6 +9,9 @@ import UIKit
 
 class TrackerCollectionViewCell: UICollectionViewCell {
     
+    private let yandexMetrica = YandexMobileMetrica()
+    private let daysFormatter = DaysFormatter()
+    
     let emojiLabel = UILabel()
     let titleLabel = UILabel()
     let daysLabel = UILabel()
@@ -114,7 +117,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     func configure(with tracker: Tracker, completedDays: Int, isCompleted: Bool) {
         emojiLabel.text = tracker.emoji
         titleLabel.text = tracker.title
-        daysLabel.text = "\(completedDays) дней"
+        daysLabel.text = daysFormatter.formatDays(completedDays)
         backgroundCardView.backgroundColor = tracker.color
         //plusButton.backgroundColor = tracker.color
         trackerID = tracker.id
@@ -129,6 +132,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func plusButtonTapped() {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "track"])
         buttonAction?()
     }
 }
