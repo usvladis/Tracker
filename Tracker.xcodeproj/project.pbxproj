@@ -478,7 +478,7 @@
 			};
 			buildConfigurationList = 218881182C2DCEEE0032D98E /* Build configuration list for PBXProject "Tracker" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

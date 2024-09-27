@@ -22,25 +22,33 @@ struct DaysFormatter {
     
     // Форматируем строку для русского языка
     private func formatDaysInRussian(_ count: Int) -> String {
-        let lastDigit = count % 10
-        let lastTwoDigits = count % 100
-        
-        if lastTwoDigits >= 11 && lastTwoDigits <= 19 {
-            return String.localizedStringWithFormat(NSLocalizedString("days_format_many", comment: ""), count)
-        } else if lastDigit == 1 {
-            return String.localizedStringWithFormat(NSLocalizedString("days_format", comment: ""), count)
-        } else if lastDigit >= 2 && lastDigit <= 4 {
-            return String.localizedStringWithFormat(NSLocalizedString("days_format_plural", comment: ""), count)
-        } else {
-            return String.localizedStringWithFormat(NSLocalizedString("days_format_many", comment: ""), count)
+        switch count {
+        case 0:
+            return NSLocalizedString("days_format_zero", comment: "")
+        default:
+            let lastDigit = count % 10
+            let lastTwoDigits = count % 100
+            
+            if lastTwoDigits >= 11 && lastTwoDigits <= 19 {
+                return String.localizedStringWithFormat(NSLocalizedString("days_format_many", comment: ""), count)
+            } else if lastDigit == 1 {
+                return String.localizedStringWithFormat(NSLocalizedString("days_format", comment: ""), count)
+            } else if lastDigit >= 2 && lastDigit <= 4 {
+                return String.localizedStringWithFormat(NSLocalizedString("days_format_plural", comment: ""), count)
+            } else {
+                return String.localizedStringWithFormat(NSLocalizedString("days_format_many", comment: ""), count)
+            }
         }
     }
     
     // Форматируем строку для английского языка
     private func formatDaysInEnglish(_ count: Int) -> String {
-        if count == 1 {
+        switch count {
+        case 0:
+            return NSLocalizedString("days_format_zero", comment: "")
+        case 1:
             return String.localizedStringWithFormat(NSLocalizedString("days_format", comment: ""), count)
-        } else {
+        default:
             return String.localizedStringWithFormat(NSLocalizedString("days_format_plural", comment: ""), count)
         }
     }

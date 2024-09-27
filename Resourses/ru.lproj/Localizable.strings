@@ -74,6 +74,7 @@
 
 //Days formatter
 
+"days_format_zero" = "0 дней";
 "days_format" = "%d день";
 "days_format_plural" = "%d дня";
 "days_format_many" = "%d дней";
