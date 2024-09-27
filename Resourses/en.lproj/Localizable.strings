@@ -60,3 +60,14 @@
 "colorLabel" = "Color";
 "cancelButton" = "Cancel";
 "createButton" = "Create";
+"textFieldLabel" = "    Enter tracker name";
+
+//Schedule
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";

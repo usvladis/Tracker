@@ -36,6 +36,7 @@ final class FilterCategoryViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = localizedString(key: "filterTitle")
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +51,7 @@ final class FilterCategoryViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.tableHeaderView = nil
         tableView.sectionHeaderHeight = 0
+        tableView.backgroundColor = UIColor(named: "YP Background")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
@@ -67,7 +69,7 @@ final class FilterCategoryViewController: UIViewController {
     }
     
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -100,9 +102,9 @@ extension FilterCategoryViewController: UITableViewDelegate, UITableViewDataSour
         cell.backgroundColor = .clear
         let item = FilterCase(rawValue: indexPath.row)!
         cell.textLabel?.text = item.title
+        cell.textLabel?.textColor = UIColor(named: "YP Black")
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         cell.accessoryType = item == filterState ? .checkmark : .none
-        cell.textLabel?.textColor = .black
         return cell
     }
     

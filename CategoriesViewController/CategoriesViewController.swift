@@ -20,6 +20,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         let label = UILabel()
         label.text = "Категории"
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
+        label.textColor = UIColor(named: "YP Black")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -31,7 +32,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         tableView.rowHeight = 75
         tableView.isScrollEnabled = true
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier)
         return tableView
@@ -40,8 +41,8 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
     private let addCategory: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .black
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
+        button.backgroundColor = UIColor(named: "YP Black")
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -87,7 +88,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
     }
     
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -131,6 +132,7 @@ final class CategoriesViewController: UIViewController, NewCategoryViewControlle
         label.text = "Привычки и события можно \nобъединить по смыслу"
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 0
+        label.textColor = UIColor(named: "YP Black")
         label.textAlignment = .center
         stackView.addArrangedSubview(label)
 
@@ -303,8 +305,8 @@ final class CategoryTableViewCell: UITableViewCell {
 
     private func setupUI() {
         textLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        textLabel?.textColor = .black
-        backgroundColor = UIColor(named: "TextFieldColor")
+        textLabel?.textColor = UIColor(named: "YP Black")
+        backgroundColor = UIColor(named: "YP Background")
         selectionStyle = .none
     }
 

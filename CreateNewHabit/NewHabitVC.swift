@@ -23,8 +23,8 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     private var selectedColor: UIColor = .clear
     
     private var habit: [(name: String, pickedSettings: String)] = [
-        (name: "Категория", pickedSettings: ""),
-        (name: "Расписание", pickedSettings: "")
+        (name: localizedString(key: "categoriaLabel"), pickedSettings: ""),
+        (name: localizedString(key: "scheduleLabel"), pickedSettings: "")
     ]
 
     // MARK: - UI Elements
@@ -48,7 +48,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая привычка"
+        label.text = localizedString(key: "newHabbitLabel")
         label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
@@ -58,9 +58,9 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var nameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "    Введите название трекера"
+        textField.placeholder = localizedString(key: "textFieldLabel")
         textField.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        textField.backgroundColor = UIColor(named: "TextFieldColor")
+        textField.backgroundColor = UIColor(named: "YP Background")
         textField.layer.cornerRadius = 10
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -110,7 +110,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private var colorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Цвет"
+        label.text = localizedString(key: "colorLabel")
         label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -129,7 +129,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(localizedString(key: "cancelButton"), for: .normal)
         button.setTitleColor(.red, for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
@@ -140,7 +140,7 @@ class NewHabitVC: UIViewController, ScheduleViewControllerDelegate {
     
     private let createButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(localizedString(key: "createButton"), for: .normal)
         button.setTitleColor(UIColor(named: "YP White"), for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 10
@@ -351,11 +351,11 @@ extension NewHabitVC: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         cell.textLabel?.textColor = UIColor(named: "YP Black")
         cell.detailTextLabel?.textColor = .gray
-        if item == "Категория" {
+        if item == localizedString(key: "categoriaLabel") {
             cell.detailTextLabel?.text = selectedCategory?.title
             cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         }
-        if item == "Расписание" {
+        if item == localizedString(key: "scheduleLabel") {
             cell.detailTextLabel?.text = habit[indexPath.row].pickedSettings
             cell.detailTextLabel?.font = UIFont(name: "YSDisplay-Medium", size: 17)
         }

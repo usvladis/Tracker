@@ -52,6 +52,7 @@ class EditTrackerViewController: UIViewController {
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Редактирование привычки"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Medium", size: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +62,7 @@ class EditTrackerViewController: UIViewController {
     private var daysLabel: UILabel = {
         var label = UILabel()
         label.text = "5 дней"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 32)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +73,7 @@ class EditTrackerViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "    Введите название трекера"
         textField.font = UIFont(name: "YSDisplay-Medium", size: 17)
-        textField.backgroundColor = UIColor(named: "TextFieldColor")
+        textField.backgroundColor = UIColor(named: "YP Background")
         textField.layer.cornerRadius = 10
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -94,6 +96,7 @@ class EditTrackerViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.tableHeaderView = nil
         tableView.sectionHeaderHeight = 0
+        tableView.backgroundColor = UIColor(named: "YP Background")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
@@ -102,6 +105,7 @@ class EditTrackerViewController: UIViewController {
     private var emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "Emoji"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -111,6 +115,7 @@ class EditTrackerViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "emojiCell")
         return collectionView
@@ -119,6 +124,7 @@ class EditTrackerViewController: UIViewController {
     private var colorLabel: UILabel = {
         let label = UILabel()
         label.text = "Цвет"
+        label.textColor = UIColor(named: "YP Black")
         label.font = UIFont(name: "YSDisplay-Bold", size: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -128,6 +134,7 @@ class EditTrackerViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         return collectionView
@@ -147,7 +154,7 @@ class EditTrackerViewController: UIViewController {
     private let saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor(named: "YP White"), for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -169,7 +176,7 @@ class EditTrackerViewController: UIViewController {
 
     // MARK: - Setup UI
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         
         // Add subviews
         view.addSubview(scrollView)
@@ -332,7 +339,7 @@ class EditTrackerViewController: UIViewController {
     private func checkIfCorrect() {
         if let text = nameTextField.text, !text.isEmpty {
             saveButton.isEnabled = true
-            saveButton.backgroundColor = .black
+            saveButton.backgroundColor = UIColor(named: "YP Black")
         } else {
             saveButton.isEnabled = false
             saveButton.backgroundColor = .gray

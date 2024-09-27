@@ -12,6 +12,7 @@ final class TrackerViewController: UIViewController{
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
+    private let yandexMetrica = YandexMobileMetrica()
     
     private var trackerLabel = UILabel()
     private var descriptionLabel = UILabel()
@@ -26,6 +27,11 @@ final class TrackerViewController: UIViewController{
     
     private var viewModel: TrackerViewModel!
     
+    override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+      yandexMetrica.report(event: "open", params: ["screen": "Main"])
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = TrackerViewModel()
@@ -34,6 +40,11 @@ final class TrackerViewController: UIViewController{
         setUpView()
         setupBindings()
         viewModel.filterTrackersForCurrentDay()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+      super.viewDidDisappear(true)
+        yandexMetrica.report(event: "close", params: ["screen": "Main"])
     }
     
     deinit {
@@ -91,6 +102,7 @@ final class TrackerViewController: UIViewController{
     }
     
     @objc private func addButtonTapped() {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "add_track"])
         let newVC = CreateTrackerViewController()
         newVC.delegate = self
         newVC.modalPresentationStyle = .popover
@@ -98,6 +110,7 @@ final class TrackerViewController: UIViewController{
     }
     
     @objc private func filterButtonTapped() {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "filter"])
         let filterCategoryVC = FilterCategoryViewController()
         filterCategoryVC.filterDelegate = self
         filterCategoryVC.modalPresentationStyle = .popover
@@ -363,6 +376,7 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
     }
     
     private func editTracker(_ tracker: Tracker, _ category: TrackerCategory) {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "edit"])
         let editTrackerViewController = EditTrackerViewController()
         editTrackerViewController.delegate = self
         editTrackerViewController.tracker = tracker
@@ -372,6 +386,7 @@ extension TrackerViewController: UIContextMenuInteractionDelegate {
     }
     
     private func deleteTracker(_ tracker: Tracker) {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "delete"])
         let actionSheet = UIAlertController(title: localizedString(key: "actionSheetTitle"), message: nil, preferredStyle: .actionSheet)
         let deleteAction = UIAlertAction(title: localizedString(key: "delte"), style: .destructive) { _ in
             self.viewModel.deleteTracker(tracker: tracker)

@@ -20,7 +20,7 @@ final class StatsViewController: UIViewController{
     
     //MARK: - SetUpUIView
     private func setUpView() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "YP White")
         setupImageView()
         setUpLabels()
     }
@@ -43,13 +43,13 @@ final class StatsViewController: UIViewController{
     }
     
     private func setUpLabels() {
-        trackerLabel.textColor = .black
+        trackerLabel.textColor = UIColor(named: "YP Black")
         trackerLabel.text = "Статистика"
         trackerLabel.font = UIFont(name: "YSDisplay-Bold", size: 34)
         trackerLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(trackerLabel)
         
-        descriptionLabel.textColor = .black
+        descriptionLabel.textColor = UIColor(named: "YP Black")
         descriptionLabel.text = "Анализировать пока нечего"
         descriptionLabel.textAlignment = .center
         descriptionLabel.font = UIFont(name: "YSDisplay-Medium", size: 12)

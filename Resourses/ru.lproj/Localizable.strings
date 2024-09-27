@@ -47,3 +47,27 @@
 // Statistic
 "doneTrackersCount" = "Трекеров завершено";
 "noCategoriesTrackers" = "Трекеры без категорий";
+
+//Create new tracker
+
+"createTrackerLabel" = "Создание трекера";
+"habbitButton" = "Привычка";
+"irregularEventButton" = "Нерегулярное событие";
+"newHabbitLabel" = "Новая привычка";
+"newIrregularLabel" = "Новое нерегулярное событие";
+"categoriaLabel" = "Категория";
+"scheduleLabel" = "Расписание";
+"colorLabel" = "Цвет";
+"cancelButton" = "Отменить";
+"createButton" = "Создать";
+"textFieldLabel" = "    Введите название трекера";
+
+//Schedule
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";

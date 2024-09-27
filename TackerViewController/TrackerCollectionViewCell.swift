@@ -9,6 +9,8 @@ import UIKit
 
 class TrackerCollectionViewCell: UICollectionViewCell {
     
+    private let yandexMetrica = YandexMobileMetrica()
+    
     let emojiLabel = UILabel()
     let titleLabel = UILabel()
     let daysLabel = UILabel()
@@ -129,6 +131,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func plusButtonTapped() {
+        yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "track"])
         buttonAction?()
     }
 }
