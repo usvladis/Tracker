@@ -47,6 +47,8 @@
 		21DCDFA82CA6D296006B5970 /* YandexMobileMetrica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCDFA72CA6D296006B5970 /* YandexMobileMetrica.swift */; };
 		21DCDFB42CA748F3006B5970 /* PlaceholderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCDFB32CA748F3006B5970 /* PlaceholderState.swift */; };
 		21DCDFB62CA7502A006B5970 /* DaysFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCDFB52CA7502A006B5970 /* DaysFormatter.swift */; };
+		21DCDFC42CA75697006B5970 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 21DCDFC32CA75697006B5970 /* InlineSnapshotTesting */; };
+		21DCDFC62CA75697006B5970 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 21DCDFC52CA75697006B5970 /* SnapshotTesting */; };
 		21EDAB592C2DFF4D00C2CD21 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */; };
 		21EDAB5A2C2DFF4D00C2CD21 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */; };
 		21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */; };
@@ -153,6 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21DCDFC62CA75697006B5970 /* SnapshotTesting in Frameworks */,
+				21DCDFC42CA75697006B5970 /* InlineSnapshotTesting in Frameworks */,
 				A3A068728A92F3EA8E54DFBE /* Pods_TrackerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +415,8 @@
 			dependencies = (
 			);
 			name = Tracker;
+			packageProductDependencies = (
+			);
 			productName = Tracker;
 			productReference = 2188811D2C2DCEEE0032D98E /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -430,6 +436,10 @@
 				218881382C2DCEEF0032D98E /* PBXTargetDependency */,
 			);
 			name = TrackerTests;
+			packageProductDependencies = (
+				21DCDFC32CA75697006B5970 /* InlineSnapshotTesting */,
+				21DCDFC52CA75697006B5970 /* SnapshotTesting */,
+			);
 			productName = TrackerTests;
 			productReference = 218881362C2DCEEF0032D98E /* TrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -486,6 +496,9 @@
 				ru,
 			);
 			mainGroup = 218881142C2DCEEE0032D98E;
+			packageReferences = (
+				21DCDFC22CA75697006B5970 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = 2188811E2C2DCEEE0032D98E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1002,6 +1015,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		21DCDFC22CA75697006B5970 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		21DCDFC32CA75697006B5970 /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 21DCDFC22CA75697006B5970 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		21DCDFC52CA75697006B5970 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 21DCDFC22CA75697006B5970 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		218881292C2DCEEE0032D98E /* Tracker.xcdatamodeld */ = {
