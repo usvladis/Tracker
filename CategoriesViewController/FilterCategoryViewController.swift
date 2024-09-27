@@ -117,10 +117,16 @@ extension FilterCategoryViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      guard let selectedFilter = FilterCase(rawValue: indexPath.row) else { return }
-      
-      filterState = selectedFilter
-      filterDelegate?.setFilter(selectedFilter)      
-      self.dismiss(animated: true)
+        guard let selectedFilter = FilterCase(rawValue: indexPath.row) else { return }
+        
+        // Обновляем фильтр и вызываем делегат
+        filterState = selectedFilter
+        filterDelegate?.setFilter(selectedFilter)  // Передаем выбранный фильтр
+        
+        // Обновляем таблицу для отображения галочки
+        tableView.reloadData()
+        
+        // Закрываем экран фильтра
+        self.dismiss(animated: true)
     }
 }

@@ -17,13 +17,14 @@ final class TrackerViewController: UIViewController{
     private var trackerLabel = UILabel()
     private var descriptionLabel = UILabel()
     private var imageMock = UIImageView()
+    private var filterDescriptionLabel = UILabel()
+    private var filterImageMock = UIImageView()
     private var searchBar = UISearchBar()
     private var datePicker = UIDatePicker()
     private var collectionView: UICollectionView!
     private var filterButton = UIButton()
     
-    var isSearch = false
-    var filterState: FilterCase = .all
+    var filterState: FilterCase?
     
     private var viewModel: TrackerViewModel!
     
@@ -54,12 +55,18 @@ final class TrackerViewController: UIViewController{
     private func setupBindings() {
         viewModel.onVisibleTrackersChanged = { [weak self] visibleTrackers in
             DispatchQueue.main.async {
-                self?.collectionView.reloadData()
                 if visibleTrackers.isEmpty {
-                    self?.showPlaceholder()
+                    if let searchText = self?.searchBar.text, !searchText.isEmpty {
+                        self?.showPlaceholder(for: .noSearchResults)
+                    } else if self?.filterState != .none {
+                        self?.showPlaceholder(for: .noFilterResults)
+                    } else {
+                        self?.showPlaceholder(for: .noTrackers)
+                    }
                 } else {
-                    self?.hidePlaceholder()
+                    self?.hideAllPlaceholders()
                 }
+                self?.collectionView.reloadData()
             }
         }
         
@@ -89,6 +96,20 @@ final class TrackerViewController: UIViewController{
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         viewModel.selectedDate = sender.date
+        switch filterState {
+        case .all:
+            viewModel.showAllTrackers()
+            collectionView.reloadData()
+        case .today:
+            viewModel.selectedDate = viewModel.selectedDate
+            viewModel.filterTrackersForCurrentDay()
+        case .complete:
+            viewModel.filterCompletedTrackers(isCompleted: true)
+        case .uncomplete:
+            viewModel.filterCompletedTrackers(isCompleted: false)
+        case .none:
+            return
+        }
     }
     
     private func showPlaceholder() {
@@ -98,6 +119,29 @@ final class TrackerViewController: UIViewController{
     
     private func hidePlaceholder() {
         descriptionLabel.isHidden = true
+        imageMock.isHidden = true
+    }
+    
+    private func showPlaceholder(for state: PlaceholderState) {
+        hideAllPlaceholders() // Прячем все плейсхолдеры перед показом нужного
+
+        switch state {
+        case .noTrackers:
+            descriptionLabel.isHidden = false
+            imageMock.isHidden = false
+        case .noSearchResults:
+            filterImageMock.isHidden = false
+            filterDescriptionLabel.isHidden = false
+        case .noFilterResults:
+            filterImageMock.isHidden = false
+            filterDescriptionLabel.isHidden = false
+        }
+    }
+
+    private func hideAllPlaceholders() {
+        descriptionLabel.isHidden = true
+        filterImageMock.isHidden = true
+        filterDescriptionLabel.isHidden = true
         imageMock.isHidden = true
     }
     
@@ -112,6 +156,7 @@ final class TrackerViewController: UIViewController{
     @objc private func filterButtonTapped() {
         yandexMetrica.report(event: "click", params: ["screen": "Main", "item": "filter"])
         let filterCategoryVC = FilterCategoryViewController()
+        filterCategoryVC.filterState = filterState ?? .all
         filterCategoryVC.filterDelegate = self
         filterCategoryVC.modalPresentationStyle = .popover
         present(filterCategoryVC, animated: true, completion: nil)
@@ -155,18 +200,27 @@ final class TrackerViewController: UIViewController{
     
     private func setupImageView() {
         imageMock.translatesAutoresizingMaskIntoConstraints = false
+        filterImageMock.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageMock)
+        view.addSubview(filterImageMock)
         
         // Установим изображение
         imageMock.image = UIImage(named: "starMock")
         imageMock.contentMode = .scaleAspectFill
+        
+        filterImageMock.image = UIImage(named: "errorMock")
+        filterImageMock.contentMode = .scaleAspectFill
         
         // Устанавливаем ограничения для ImageView
         NSLayoutConstraint.activate([
             imageMock.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageMock.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageMock.widthAnchor.constraint(equalToConstant: 80),
-            imageMock.heightAnchor.constraint(equalToConstant: 80)
+            imageMock.heightAnchor.constraint(equalToConstant: 80),
+            filterImageMock.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterImageMock.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            filterImageMock.widthAnchor.constraint(equalToConstant: 80),
+            filterImageMock.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
     
@@ -187,11 +241,22 @@ final class TrackerViewController: UIViewController{
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         
+        filterDescriptionLabel.textColor = UIColor(named: "YP Black")
+        filterDescriptionLabel.text = localizedString(key:"trackersSearchLabel")
+        filterDescriptionLabel.textAlignment = .center
+        filterDescriptionLabel.font = UIFont(name: "YSDisplay-Medium", size: 12)
+        filterDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterDescriptionLabel)
+        
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: imageMock.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterDescriptionLabel.topAnchor.constraint(equalTo: filterImageMock.bottomAnchor, constant: 8),
+            filterDescriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            filterDescriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            filterDescriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trackerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             trackerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
             
@@ -406,19 +471,14 @@ extension TrackerViewController: FilterDelegate {
         
         switch filterState {
         case .all:
-            isSearch = false
             viewModel.showAllTrackers()
             collectionView.reloadData()
         case .today:
-            isSearch = false
-            datePicker.date = Date()
-            viewModel.selectedDate = datePicker.date
+            viewModel.selectedDate = viewModel.selectedDate
             viewModel.filterTrackersForCurrentDay()
         case .complete:
-            isSearch = true
             viewModel.filterCompletedTrackers(isCompleted: true)
         case .uncomplete:
-            isSearch = true
             viewModel.filterCompletedTrackers(isCompleted: false)
         }
     }
@@ -426,14 +486,21 @@ extension TrackerViewController: FilterDelegate {
 
 extension TrackerViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-           viewModel.searchText = searchText
-       }
-
-       func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-           searchBar.text = ""
-           viewModel.searchText = ""
-           searchBar.resignFirstResponder()
-       }
+        viewModel.searchText = searchText
+        if viewModel.visibleTrackers.isEmpty && !searchText.isEmpty {
+            showPlaceholder(for: .noSearchResults)
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        viewModel.searchText = ""
+        searchBar.resignFirstResponder()
+        
+        if viewModel.visibleTrackers.isEmpty {
+            showPlaceholder(for: .noTrackers)
+        }
+    }
 
        private func updateUIWithVisibleTrackers(_ visibleTrackers: [TrackerCategory]) {
            // Здесь обновляется пользовательский интерфейс с новыми отфильтрованными данными

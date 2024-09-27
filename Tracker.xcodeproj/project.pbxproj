@@ -45,6 +45,7 @@
 		219AB67C2C37EC3400F0B613 /* NewHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */; };
 		219AB67F2C37ECBC00F0B613 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */; };
 		21DCDFA82CA6D296006B5970 /* YandexMobileMetrica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCDFA72CA6D296006B5970 /* YandexMobileMetrica.swift */; };
+		21DCDFB42CA748F3006B5970 /* PlaceholderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCDFB32CA748F3006B5970 /* PlaceholderState.swift */; };
 		21EDAB592C2DFF4D00C2CD21 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */; };
 		21EDAB5A2C2DFF4D00C2CD21 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */; };
 		21EDAB5C2C2E05EE00C2CD21 /* TrackerNavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */; };
@@ -118,6 +119,7 @@
 		219AB67B2C37EC3400F0B613 /* NewHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitVC.swift; sourceTree = "<group>"; };
 		219AB67E2C37ECBC00F0B613 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		21DCDFA72CA6D296006B5970 /* YandexMobileMetrica.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMobileMetrica.swift; sourceTree = "<group>"; };
+		21DCDFB32CA748F3006B5970 /* PlaceholderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderState.swift; sourceTree = "<group>"; };
 		21EDAB562C2DFF4D00C2CD21 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		21EDAB572C2DFF4D00C2CD21 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		21EDAB5B2C2E05EE00C2CD21 /* TrackerNavBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNavBarController.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				21EDABA12C30428B00C2CD21 /* Tracker.swift */,
 				21EDABA32C3042A700C2CD21 /* TrackerCategory.swift */,
 				21EDABA52C3042B000C2CD21 /* TrackerRecord.swift */,
+				21DCDFB32CA748F3006B5970 /* PlaceholderState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 				2188812B2C2DCEEE0032D98E /* Tracker.xcdatamodeld in Sources */,
 				210E27202C345AAA00189D83 /* TrackersHeaderReusableView.swift in Sources */,
 				211C4B272C6CF55F0022155F /* TrackerCategoryStore.swift in Sources */,
+				21DCDFB42CA748F3006B5970 /* PlaceholderState.swift in Sources */,
 				217119ED2CA5B67E0065DC2E /* NSLocalizedString.swift in Sources */,
 				217119E42C92FFAD0065DC2E /* EditTrackerViewController.swift in Sources */,
 				218881252C2DCEEE0032D98E /* ViewController.swift in Sources */,
